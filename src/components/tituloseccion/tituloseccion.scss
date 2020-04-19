@@ -1,0 +1,11 @@
+@import "../../scss/index.scss";
+.tituloseccion {
+  padding: 25px 0;
+
+  text-align: center;
+  color: $color-primario;
+  h2 {
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+}

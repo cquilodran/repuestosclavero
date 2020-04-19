@@ -1,1 +1,120 @@
-.header{}
+@import "../../scss/index.scss";
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 10vh;
+  background-color: $color-primario;
+  z-index: 2;
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    height: 100%;
+    &__logo {
+      height: 100%;
+      padding: .5% 0;
+      img {
+        height: 100%;
+      }
+    }
+    &__menu {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      .menu-item {
+        text-decoration: none;
+        padding: 10px 20px;
+        color: white;
+        cursor: pointer;
+        transition: 0.5s ease-out;
+        border-top: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+        font-size: 1.1em;
+        &:hover {
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+        }
+      }
+    }
+    &__rrss {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: .5% 0;
+      img {
+        height: 100%;
+        margin: 0 15%;
+      }
+    }
+    &__icono {
+      height: 100%;
+      display: none;
+      font-size: 2em;
+      padding: 0px 5px;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .header {
+    &__nav {
+      .noactivo {
+        -webkit-clip-path: circle(0% at 100% 0%);
+        clip-path: circle(0% at 100% 0%);
+      }
+      .activo {
+        -webkit-clip-path: circle(100% at 100% 0%);
+        clip-path: circle(100% at 100% 0%);
+      }
+      &__icono {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        cursor: pointer;
+        transition: 1s ease-out;
+      }
+      &__logo {
+        height: 100%;
+        padding: 2% 0 !important;
+        img {
+          height: 100%;
+        }
+      }
+
+      &__menu {
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        top: 0px;
+        right: 0%;
+        flex-direction: column;
+        background: -webkit-linear-gradient(to right, #020202, #444444);
+        background: linear-gradient(to right, #000000, #444444);
+        transition: all 1s ease;
+        .menu-item {
+          &:hover {
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+          }
+        }
+      }
+      &__rrss {
+        display: flex;
+        justify-content: space-around;
+        align-items: top;
+        padding: 2% 0;
+        img {
+          height: 100%;
+          margin: 0 12%;
+        }
+      }
+    }
+  }
+}

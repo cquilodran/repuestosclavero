@@ -1,3 +1,53 @@
-.despachos{
-    
+@import "../../scss/index.scss";
+
+.despachos {
+  margin-top: 10vh;
+  border-bottom: 1px solid $color-primario;
+  &__texto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 50px 0;
+    p {
+      width: 30%;
+      text-align: justify;
+    }
+    strong {
+      width: 30%;
+      text-align: justify;
+    }
+  }
+  &__iconos-transporte {
+    padding: 25px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      // border: 1px solid black;
+      margin: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .despachos {
+    &__texto {
+      p {
+        width: 90%;
+        text-align: justify;
+      }
+      strong {
+        width: 90%;
+        text-align: justify;
+      }
+    }
+    &__iconos-transporte {
+      padding: 25px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
 }

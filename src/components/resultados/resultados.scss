@@ -1,0 +1,40 @@
+@import "../../scss/index.scss";
+
+.resultados {
+  padding: 25px 0;
+  &__busqueda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0;
+    border-bottom: 1px solid $color-primario;
+    h4 {
+      text-align: center;
+      color: $color-primario;
+    }
+  }
+  &__productos {
+      padding: 25px 0;
+    button {
+      background-color: transparent;
+      border: transparent;
+      color: $color-primario;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .resultados {
+    &__busqueda {
+      h4 {
+        max-width: 90%;
+        font-size: 1em;
+      }
+    }
+    &__productos{
+        
+    }
+  }
+}

@@ -1,11 +1,32 @@
 import React from 'react';
+import Tituloseccion from '../../components/tituloseccion';
+
 
 import './despachos.scss';
+import pullman from '../../assets/pullman-cargo-min.jfif'
+import chilexpress from '../../assets/chilexpress-min.jfif'
+import starken from '../../assets/starken-min.jfif'
 
 const Despachos = () => {
     return (
-        <div>
-            Estamos en Despachos
+        <div className="despachos">
+            <Tituloseccion txt="Despachos" />
+            <div className="despachos__texto">
+                <p>
+                    ¡Despachamos a todo chile de Arica a Punta Arenas e Islas peninsulares
+                    por pagar vía Starken, Pullman cargo y Chilexpress o con la empresa que
+                    te acomode en 24hrs o día hábil siguiente!
+                </p>
+                <strong>
+                    Debido a las demoras en los transportes, te aseguramos el envío de tus 
+                    producto, pero debes tener paciencia tanto en el despacho como en la llegada.
+                </strong>
+            </div>
+            <div className="despachos__iconos-transporte">
+                <img className="img-fluid" src={pullman} alt="logo pullman"/>
+                <img className="img-fluid" src={chilexpress} alt="logo chilexpress"/>
+                <img className="img-fluid" src={starken} alt="logo starken"/>
+            </div>
         </div>
     )
 }

@@ -4,8 +4,8 @@ import './notfound.scss';
 
 const Notfound = () => {
     return (
-        <div>
-            Estamos en Notfound
+        <div className="notfound">
+            pagina no encontrada
         </div>
     )
 }

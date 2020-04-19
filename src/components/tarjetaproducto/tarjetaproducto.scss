@@ -1,0 +1,43 @@
+@import "../../scss/index.scss";
+.tarjetaproducto {
+  border: 1px solid $color-primario;
+  border-radius: 5px;
+  min-height: 40vh;
+  padding: 15px;
+  font-size: 1em;
+  margin: 5px;
+  transition: 1s;
+  &:hover {
+    box-shadow: 2px 2px 6px 0px $color-uno;
+  }
+  &__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid $color-primario;
+  }
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-primario;
+    font-weight: 250;
+  }
+  button {
+    width: 100%;
+    background-color: $color-primario;
+    clip-path: polygon(5% 0, 100% 0%, 95% 99%, 0% 100%);
+    border: transparent;
+    transition: 1s ease;
+    &:hover {
+      background-color: $color-cuatro;
+      color: white;
+    }
+  }
+}
+
+@media screen and (max-width:750px){
+  .tarjetaproducto{
+
+  }
+}

@@ -1,7 +1,6 @@
 // Layouts
 
 import LayoutHome from '../layouts/layoutsHome';
-import LayoutTienda from '../layouts/layoutTienda';
 
 // Page
 
@@ -13,23 +12,6 @@ import Productos from '../pages/productos';
 
 const routes = [
     {
-        path: '/tienda',
-        component: LayoutTienda,
-        exact: false,
-        routes: [
-            {
-                path: '/tienda',
-                component: Tienda,
-                exact: true
-            },
-            {
-                path: '/tienda/productos',
-                component: Productos,
-                exact: true
-            },
-        ]
-    },
-    {
         path: '/',
         component: LayoutHome,
         exact: false,
@@ -38,6 +20,23 @@ const routes = [
                 path: '/',
                 component: Home,
                 exact: true
+            },
+            {
+                path: '/tienda',
+                component: Tienda,
+                exact: false,
+                routes: [
+                    {
+                        path: '/tienda',
+                        component: Tienda,
+                        exact: true
+                    },
+                    {
+                        path: '/tienda/productos',
+                        component: Productos,
+                        exact: true
+                    }
+                ]
             },
             {
                 path: '/despachos',
@@ -49,8 +48,8 @@ const routes = [
             }
         ]
     },
-    
-    
+
+
 ]
 
 export default routes;
