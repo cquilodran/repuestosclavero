@@ -6,7 +6,7 @@
   padding: 15px;
   font-size: 1em;
   margin: 5px;
-  transition: 1s;
+  transition: 0.5s;
   &:hover {
     box-shadow: 2px 2px 6px 0px $color-uno;
   }
@@ -25,19 +25,33 @@
   }
   button {
     width: 100%;
-    background-color: $color-primario;
+    padding: 5px 0 0 0;
+    font-size: 1.5em;
+    background-color: $color-primario !important;
+    color: black !important;
     clip-path: polygon(5% 0, 100% 0%, 95% 99%, 0% 100%);
     border: transparent;
     transition: 1s ease;
     &:hover {
-      background-color: $color-cuatro;
-      color: white;
+      background-color: $color-cuatro !important;
+    }
+  }
+  &__btnmodal {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    a {
+      svg {
+        transition: 0.5s;
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 }
 
-@media screen and (max-width:750px){
-  .tarjetaproducto{
-
-  }
-}
+// @media screen and (max-width: 750px) {
+//   .tarjetaproducto {
+//   }
+// }

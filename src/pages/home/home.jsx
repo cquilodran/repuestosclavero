@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React from 'react';
 import { Link } from 'react-router-dom'
+
+
 
 
 // Componentes
@@ -9,7 +12,20 @@ import Marcas from '../../components/marcas'
 // Styles
 import './home.scss';
 import Fondo from '../../assets/3.jpg'
+
 const Home = () => {
+
+
+    // window.onscroll =()=>{
+
+    //     if (document.documentElement.scrollTop > 100) {
+    //        console.log("Scroll activado"); 
+    //     }
+    // }
+
+
+
+
     const alto = '60vh'
     const estilos = { backgroundImage: `url(${Fondo})`, height: `${alto}` }
     return (
@@ -19,12 +35,12 @@ const Home = () => {
                     <h2>Repuestos Clavero</h2>
                     <h1>Repuestos y accesorios para vehículos</h1>
                     <p>Despachos a todo Chile.</p>
-                    {/* Aca bton de ver toda la tieda */}
                     <Link to="/tienda" className="btn-tienda">
                         Ver productos
                     </Link>
                 </div>
             </div>
+
             <div className="home__buscador">
                 <Buscador />
             </div>

@@ -27,11 +27,11 @@
         color: $color-primario;
         font-weight: 100;
         text-align: center;
-        animation: entrada 1s ease-out;
+        animation: entrada 1.2s ease-out;
       }
       p {
         color: $color-primario;
-        animation: entrada 1s ease-out;
+        animation: entrada 1.3s ease-out;
       }
       .btn-tienda {
         border: 1px solid $color-primario;
@@ -57,6 +57,12 @@
     }
   }
 }
+.aparecer{
+  animation: entrada 2s;
+}
+.invisible{
+  opacity: 0;
+}
 
 @media screen and (max-width: 420px) {
   .home {
@@ -79,5 +85,6 @@
   }
   100% {
     opacity: 1;
+    // transform: translateY(30px);
   }
 }

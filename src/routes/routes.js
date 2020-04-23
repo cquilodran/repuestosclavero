@@ -9,6 +9,7 @@ import Home from '../pages/home';
 import Despachos from '../pages/despachos';
 import Tienda from '../pages/tienda';
 import Productos from '../pages/productos';
+import Resultados from '../pages/resultados'
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
             {
                 path: '/despachos',
                 component: Despachos,
+                exact: true
+            },
+            {
+                path: '/resultados',
+                component: Resultados,
                 exact: true
             },
             {

@@ -1,23 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import routes from './routes';
-
+import { ProductosProvider } from './context/productos'
 
 
 function App() {
 
   return (
-    <div>
-      <Router>
-        <Switch>
-          {
-            routes.map((route, index) => (
-              <RouteWithSubRoutes key={index} {...route} />
-            ))
-          }
-        </Switch>
-      </Router>
-    </div>
+      <ProductosProvider>
+        <Router>
+          <Switch>
+            {
+              routes.map((route, index) => (
+                <RouteWithSubRoutes key={index} {...route} />
+              ))
+            }
+          </Switch>
+        </Router>
+      </ProductosProvider>
   );
 }
 

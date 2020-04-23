@@ -1,5 +1,6 @@
 import React from 'react';
 import Tituloseccion from '../../components/tituloseccion';
+import { useInView } from 'react-intersection-observer';
 
 
 import './despachos.scss';
@@ -8,10 +9,16 @@ import chilexpress from '../../assets/chilexpress-min.jfif'
 import starken from '../../assets/starken-min.jfif'
 
 const Despachos = () => {
+    const [visto, inView] = useInView({ threshold: 0 })
+
+    if (inView) {
+        document.getElementById("texto-despacho").classList.remove("invisible")
+        document.getElementById("texto-despacho").classList.add("aparecer")
+    }
     return (
-        <div className="despachos">
+        <div className="despachos" ref={visto} id="texto-despacho">
             <Tituloseccion txt="Despachos" />
-            <div className="despachos__texto">
+            <div className="despachos__texto" >
                 <p>
                     ¡Despachamos a todo chile de Arica a Punta Arenas e Islas peninsulares
                     por pagar vía Starken, Pullman cargo y Chilexpress o con la empresa que

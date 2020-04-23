@@ -4,3 +4,9 @@
   margin-top: 10vh;
   border-bottom: 1px solid $color-primario;
 }
+.aparecer{
+  animation: entrada 2s;
+}
+.invisible{
+  opacity: 0;
+}

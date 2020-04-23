@@ -14,7 +14,7 @@
     height: 100%;
     &__logo {
       height: 100%;
-      padding: .5% 0;
+      padding: 0.5% 0;
       img {
         height: 100%;
       }
@@ -39,6 +39,10 @@
           border-top: 2px solid black;
           border-bottom: 2px solid black;
         }
+        .icono {
+          margin-right: 5px;
+          // color: red !important;
+        }
       }
     }
     &__rrss {
@@ -46,7 +50,7 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-      padding: .5% 0;
+      padding: 0.5% 0;
       img {
         height: 100%;
         margin: 0 15%;

@@ -5,7 +5,9 @@ import './header.scss';
 import Logo from '../../assets/logo-blanco2.png';
 import wsp from '../../assets//wsp2.png'
 import llamar from '../../assets/llamar.png'
-
+import { BsHouse } from "react-icons/bs";
+import { AiOutlineShop } from "react-icons/ai";
+import { FiTruck } from "react-icons/fi";
 const Header = () => {
 
     const [act, setAct] = useState(false)
@@ -41,18 +43,23 @@ const Header = () => {
                     </Link>
                 </div>
                 <div className="header__nav__menu noactivo" id="menu">
+
                     <Link to='/' className="menu-item" onClick={activamenu}>
+                        <BsHouse size='1.5em' color="white" className="icono" />
                         Home
                     </Link>
                     <Link to='/tienda' className="menu-item" onClick={activamenu}>
+                        <AiOutlineShop size='1.5em' color="white" className="icono" />
                         Tienda
-                    </Link><Link to='/despachos' className="menu-item" onClick={activamenu}>
+                    </Link>
+                    <Link to='/despachos' className="menu-item" onClick={activamenu}>
+                        <FiTruck size='1.5em' color="white" className="icono" />
                         Despachos
                     </Link>
                 </div>
                 <div className="header__nav__rrss">
-                    <img className="img-fluid" src={wsp} alt="icono wsp"/>
-                    <img className="img-fluid" src={llamar} alt="icono llamar"/>
+                    <img className="img-fluid" src={wsp} alt="icono wsp" />
+                    <img className="img-fluid" src={llamar} alt="icono llamar" />
                 </div>
                 <div className="header__nav__icono" id="icono" onClick={activamenu}>
                     <span>&#9776;</span>

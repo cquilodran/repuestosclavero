@@ -51,7 +51,7 @@ const Resultados = () => {
                         </div>
                     </div>
                     <br />
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col">
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination">
@@ -63,7 +63,7 @@ const Resultados = () => {
                                 </ul>
                             </nav>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

@@ -29,6 +29,12 @@
     }
   }
 }
+.aparecer{
+  animation: entrada 2s;
+}
+.invisible{
+  opacity: 0;
+}
 
 @media screen and (max-width: 750px) {
   .despachos {
@@ -51,3 +57,4 @@
     }
   }
 }
+
