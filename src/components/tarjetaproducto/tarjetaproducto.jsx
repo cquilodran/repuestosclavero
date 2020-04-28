@@ -8,8 +8,9 @@ import { FcCancel } from "react-icons/fc";
 Modal.setAppElement('#root')
 const TarjetaProducto = (props) => {
     const { nombre, precio, marca, marca2, modelo, años, foto } = props
-    const [modalIsOpen, setModalIsOpen] = useState(false)
     const [mensaje, setMensaje] = useState("")
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
     const customStyles = {
         content: {
             top: '50%',

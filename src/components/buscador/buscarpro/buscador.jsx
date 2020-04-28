@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom';
 import { ProductosContext } from '../../../context/productos'
 import Espera from '../../espera'
 import toast from 'toasted-notes'
+import Modal from 'react-modal'
 
 
 import './buscador.scss'
+import { FaWhatsapp } from "react-icons/fa";
+import { FcCancel } from "react-icons/fc";
 
 const Buscador = () => {
 
-    const { categorias, marcasauto, resultado, getProductos, modelosauto, años, vistopro, eliminaaños, eliminamodelos, filtraproductos, resultadofiltro, eliminafiltro } = useContext(ProductosContext)
+    const { categorias, marcasauto, resultado, getProductos, modelosauto, años, vistopro, eliminaaños, eliminamodelos, filtraproductos, resultadofiltro, eliminafiltro, eliminaresultado } = useContext(ProductosContext)
     const [data, setData] = useState({
         categoria: null,
         marcaauto: null,
@@ -50,6 +53,30 @@ const Buscador = () => {
     const clicboton = () => {
         window.scrollTo(0, 0)
     }
+    // MODAL
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#ffaa00',
+            transition: '1s  easy',
+            color: "white"
+        }
+    };
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+    function eventface(n) {
+        // aca dispara el envento de pixel facebook
+    }
+    // MODAL
     useEffect(() => {
         if (data.modeloauto && data.añoauto && data.categoria && data.marcaauto) {
             filtraproductos(data)
@@ -75,6 +102,10 @@ const Buscador = () => {
         }
         if (resultado === false) {
             setTitulo("DISCULPA, NO TENEMOS EL REPUESTOS QUE BUSCAS")
+            eliminaresultado()
+            setModalIsOpen(true)
+
+
         }
 
     }, [resultado])
@@ -184,11 +215,30 @@ const Buscador = () => {
                         }
                     </form>
                 </div>
+                <Modal
+                    isOpen={modalIsOpen}
+                    style={customStyles}
+                    onRequestClose={closeModal}
+                    closeTimeoutMS={500}
+                >
+                    <h4>Lamento decir que no tengo tu repuesto en mi stock web.</h4>
+                    <p>Es muy posible que lo tengamos en nuestro local, ¿deseas contactarnos de forma inmediata vía whatsapp?</p>
+                    <hr />
+                    <div className="tarjetaproducto__btnmodal">
+                        <a target='blank' href='https://wa.me/56966678588?text=Me%20gustaría%20cotizar%20'>
+                            <FaWhatsapp size="4em" color="white" onClick={() => eventface()} />
+                        </a>
+                        <FcCancel size="4em" onClick={() => setModalIsOpen(false)} />
+                    </div>
+                </Modal>
             </div>
         )
     }
     return (
-        <Espera />
+        <>
+            <h3>Cargando nuestro formulario de busqueda...</h3>
+            <Espera />
+        </>
     )
 
 }

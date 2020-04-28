@@ -40,8 +40,7 @@
           border-bottom: 2px solid black;
         }
         .icono {
-          margin-right: 5px;
-          // color: red !important;
+          margin-right: 15px;
         }
       }
     }
@@ -51,16 +50,19 @@
       align-items: center;
       height: 100%;
       padding: 0.5% 0;
+      svg {
+        height: 100%;
+        font-size: 5em;
+        margin: 0 15%;
+        color: white;
+      }
       img {
         height: 100%;
         margin: 0 15%;
       }
     }
     &__icono {
-      height: 100%;
       display: none;
-      font-size: 2em;
-      padding: 0px 5px;
     }
   }
 }
@@ -69,20 +71,22 @@
   .header {
     &__nav {
       .noactivo {
-        -webkit-clip-path: circle(0% at 100% 0%);
-        clip-path: circle(0% at 100% 0%);
+        transition: all 1s;
+        right: --100%;
       }
       .activo {
-        -webkit-clip-path: circle(100% at 100% 0%);
-        clip-path: circle(100% at 100% 0%);
+        right: 0%;
+        transition: all 1s;
       }
       &__icono {
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 100;
-        cursor: pointer;
+        font-size: 2em;
         transition: 1s ease-out;
+        margin-top: auto;
+        color: white;
       }
       &__logo {
         height: 100%;
@@ -94,19 +98,15 @@
 
       &__menu {
         position: fixed;
-        height: 100vh;
-        width: 100%;
-        top: 0px;
-        right: 0%;
         flex-direction: column;
-        background: -webkit-linear-gradient(to right, #020202, #444444);
-        background: linear-gradient(to right, #000000, #444444);
-        transition: all 1s ease;
+        justify-content: flex-start;
+        width: 75%;
+        top: 10vh;
+        padding: 14px 0 0 15px;
+        background-color: $color-tres;
         .menu-item {
-          &:hover {
-            border-top: 2px solid white;
-            border-bottom: 2px solid white;
-          }
+          width: 100%;
+          text-align: left;
         }
       }
       &__rrss {
@@ -114,6 +114,10 @@
         justify-content: space-around;
         align-items: top;
         padding: 2% 0;
+        svg {
+          font-size: 6em;
+          // color: red;
+        }
         img {
           height: 100%;
           margin: 0 12%;

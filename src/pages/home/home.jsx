@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom'
 
-
+import { ProductosContext } from '../../context/productos'
 
 
 // Componentes
@@ -14,7 +14,7 @@ import './home.scss';
 import Fondo from '../../assets/3.jpg'
 
 const Home = () => {
-
+    const { propaginados } = useContext(ProductosContext)
 
     // window.onscroll =()=>{
 
@@ -35,9 +35,13 @@ const Home = () => {
                     <h2>Repuestos Clavero</h2>
                     <h1>Repuestos y accesorios para vehículos</h1>
                     <p>Despachos a todo Chile.</p>
-                    <Link to="/tienda" className="btn-tienda">
-                        Ver productos
-                    </Link>
+                    {
+                        propaginados.length > 0 ?
+                            (<Link to="/tienda" className="btn-tienda">
+                                Ver todos repuestos
+                    </Link>) : (null)
+                    }
+
                 </div>
             </div>
 

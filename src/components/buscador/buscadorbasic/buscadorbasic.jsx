@@ -1,27 +1,42 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { ProductosContext } from '../../../context/productos'
+
 
 import Resultados from '../../resultados'
-
+import ResulBusqueda from '../../resulbusqueda'
 import './buscadorbasic.scss'
 
+
 const Buscadorbasic = () => {
+    const { busqueda, resultadosbusquedausuario } = useContext(ProductosContext)
+
+    const changeForm = (e) => {
+        e.preventDefault()
+        if (e.target.value === "") {
+            resultadosbusquedausuario(null)
+        } else {
+            resultadosbusquedausuario(e.target.value)
+        }
+    }
+
     return (
         <>
             <div className="buscadorbasic">
-                <form action="" className="buscadorbasic__form">
+                <div className="buscadorbasic__form">
                     <input
                         className="input"
                         type="text"
-                        placeholder="Busca tu respuesto..."
+                        placeholder="Buscador de repuestos..."
+                        name="name"
+                        onChange={changeForm}
                     />
                     <br />
-                    <button
-                        className="btn-buscar-2"
-                    >
-                        Buscar
-                </button>
-                </form>
+                </div>
             </div>
+
+            <ResulBusqueda data={busqueda} />
+
             <Resultados />
         </>
     )

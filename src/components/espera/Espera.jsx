@@ -8,7 +8,7 @@ function Espera() {
 
         <>
             <div className="espera">
-                <img src={espe} alt="logo espera" />
+                <img src={espe} alt="logo espera" className="img-fluid" />
             </div>
         </>
     )

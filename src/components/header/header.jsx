@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom'
 
 import './header.scss';
 import Logo from '../../assets/logo-blanco2.png';
-import wsp from '../../assets//wsp2.png'
-import llamar from '../../assets/llamar.png'
 import { BsHouse } from "react-icons/bs";
 import { AiOutlineShop } from "react-icons/ai";
 import { FiTruck } from "react-icons/fi";
-const Header = () => {
+import { FaWhatsapp } from "react-icons/fa";
+import { FaPhone } from "react-icons/fa";
 
+import { ProductosContext } from '../../context/productos'
+
+const Header = () => {
+    const { propaginados } = useContext(ProductosContext)
     const [act, setAct] = useState(false)
     const [menu, setMenu] = useState()
 
@@ -48,18 +51,27 @@ const Header = () => {
                         <BsHouse size='1.5em' color="white" className="icono" />
                         Home
                     </Link>
-                    <Link to='/tienda' className="menu-item" onClick={activamenu}>
-                        <AiOutlineShop size='1.5em' color="white" className="icono" />
-                        Tienda
+                    {
+                        propaginados.length > 0 ?
+                            (
+                                <Link to='/tienda' className="menu-item" onClick={activamenu}>
+                                    <AiOutlineShop size='1.5em' color="white" className="icono" />
+                                    Tienda
                     </Link>
+                            ) :
+                            (null)
+                    }
+
                     <Link to='/despachos' className="menu-item" onClick={activamenu}>
                         <FiTruck size='1.5em' color="white" className="icono" />
                         Despachos
                     </Link>
                 </div>
                 <div className="header__nav__rrss">
-                    <img className="img-fluid" src={wsp} alt="icono wsp" />
-                    <img className="img-fluid" src={llamar} alt="icono llamar" />
+                    <FaWhatsapp />
+                    <FaPhone />
+                    {/* <img className="img-fluid" src={wsp} alt="icono wsp" />
+                    <img className="img-fluid" src={llamar} alt="icono llamar" /> */}
                 </div>
                 <div className="header__nav__icono" id="icono" onClick={activamenu}>
                     <span>&#9776;</span>

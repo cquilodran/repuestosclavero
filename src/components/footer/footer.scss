@@ -2,8 +2,18 @@
 
 .footer {
   padding-top: 25px;
-  img {
-    // width: 25%;
+  &__principal {
+    // text-align: center;
+    svg {
+      font-size: 1.5em;
+      margin: 0 1% 0 0;
+    }
+    .rrss {
+      svg {
+        margin: 0 25px 0 0;
+        color: black;
+      }
+    }
   }
   &__creditos {
     padding-top: 15px;
