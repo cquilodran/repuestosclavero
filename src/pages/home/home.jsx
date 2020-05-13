@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom'
+import React from 'react';
 
-import { ProductosContext } from '../../context/productos'
 
 
 // Componentes
@@ -11,42 +9,50 @@ import Marcas from '../../components/marcas'
 
 // Styles
 import './home.scss';
-import Fondo from '../../assets/3.jpg'
-
+import { FiTruck } from "react-icons/fi";
+import { IoMdCard } from "react-icons/io";
+import { RiShieldStarLine } from "react-icons/ri";
 const Home = () => {
-    const { propaginados } = useContext(ProductosContext)
-
-    // window.onscroll =()=>{
-
-    //     if (document.documentElement.scrollTop > 100) {
-    //        console.log("Scroll activado"); 
-    //     }
-    // }
-
-
-
-
-    const alto = '60vh'
-    const estilos = { backgroundImage: `url(${Fondo})`, height: `${alto}` }
     return (
         <div className="home">
-            <div className="home__portada" style={estilos}>
+            <div className="home__portada">
                 <div className="capa">
                     <h2>Repuestos Clavero</h2>
                     <h1>Repuestos y accesorios para vehículos</h1>
                     <p>Despachos a todo Chile.</p>
-                    {
-                        propaginados.length > 0 ?
-                            (<Link to="/tienda" className="btn-tienda">
-                                Ver todos repuestos
-                    </Link>) : (null)
-                    }
-
                 </div>
             </div>
 
             <div className="home__buscador">
                 <Buscador />
+            </div>
+            <div className="home__miles">
+
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-4">
+                            <div className="tarjeta">
+                                <h3>Reparto a domicilio</h3>
+                                <p>Nos comprometemos a llevar tu respuestos en el menor tiempo posible.</p>
+                                <FiTruck size='6em' color="black" className="icono" />
+                            </div>
+                        </div>
+                        <div className="col-md-4">
+                            <div className="tarjeta">
+                                <h3>Todo medio de pago</h3>
+                                <p>Paga comodamente con tus tarjetas de crédito y/o débito.</p>
+                                <IoMdCard size='6em' color="black" className="icono" />
+                            </div>
+                        </div>
+                        <div className="col-md-4">
+                            <div className="tarjeta">
+                                <h3>Compra garantizada</h3>
+                                <p>Si por alguna razon el repuesto es el equivocado, puedes pedir devolución o cambio.</p>
+                                <RiShieldStarLine size='6em' color="black" className="icono" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className="home__marcas">
                 <Marcas />

@@ -29,7 +29,7 @@ const TarjetaProducto = (props) => {
         setModalIsOpen(false);
     }
     function createxto(n, a, p) {
-        const x = `https://wa.me/56966678588?text=Me%20gustaría%20cotizar%20${n}%20año${a}%20con%20precio%20unitario%20de%20${p}`
+        const x = `https://wa.me/56982044499?text=Me%20gustaría%20cotizar%20${n}%20año${a}%20con%20precio%20unitario%20de%20${p}`
         setMensaje(x)
     }
     function eventface(n) {
@@ -42,7 +42,7 @@ const TarjetaProducto = (props) => {
             </div>
 
             <h2>{nombre}</h2>
-            <p><strong>Precio: </strong>{precio}</p>
+            <p><strong>Precio: </strong>{new Intl.NumberFormat("es-ES", { style: "currency", currency: "CLP" }).format(precio)}</p>
             <p><strong>Marca: </strong> {marca}</p>
             <p><strong>Marca Vehículo: </strong> {marca2}</p>
             <p><strong>Modelo Vehículo: </strong> {modelo}</p>

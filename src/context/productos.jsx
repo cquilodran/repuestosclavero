@@ -5,7 +5,6 @@ import Axios from 'axios'
 const ProductosContext = React.createContext()
 const { Provider, Consumer } = ProductosContext
 
-var xxx = []
 
 function ProductosProvider({ children }) {
     // contexto de productos carga inicial
@@ -14,9 +13,7 @@ function ProductosProvider({ children }) {
     const [marcasauto, setMarcasauto] = useState([])
     //formulario basico
 
-    //Contexto cuando el cliente entra a pagina tienda
-    const [propaginados, setPropaginados] = useState([])
-    const [destacados, setDestacados] = useState([])
+
 
 
     // contexto de datos en base a seleccion de usuario
@@ -24,7 +21,6 @@ function ProductosProvider({ children }) {
     const [años, setAños] = useState([])
     const [modelosauto, setModelosauto] = useState([])
     //formulario basico
-    const [busqueda, setBusqueda] = useState([])
 
 
 
@@ -41,7 +37,6 @@ function ProductosProvider({ children }) {
     const [resultado, setResultado] = useState(null)
     const [resultadofiltro, setResultadofiltro] = useState(null)
     //formulario basico
-    const [cargandopaginados, setCargandopaginados] = useState(0)
 
 
     useEffect(() => {
@@ -83,7 +78,7 @@ function ProductosProvider({ children }) {
         setVistopro(true)
         Axios({
             method: 'get',
-            url: 'https://repuestosclavero.cl/backend/wp-json/wc/v2/products',
+            url: 'https://gestionbd.repuestosclavero.cl/wp-json/wc/v2/products',
             auth: {
                 username: "ck_6f821f4bd36d7e5608c75fb11c700ddf6d516371",
                 password: "cs_3e2c5a8fee141a41a1026ecea379c623390fb538"
@@ -186,115 +181,8 @@ function ProductosProvider({ children }) {
     function eliminaresultado() {
         setResultado(null)
     }
-    function pedirproductospaginados(limite, pagina) {
 
 
-        Axios({
-            method: 'get',
-            url: 'https://gestionbd.repuestosclavero.cl/wp-json/wc/v2/products',
-            auth: {
-                username: "ck_6f821f4bd36d7e5608c75fb11c700ddf6d516371",
-                password: "cs_3e2c5a8fee141a41a1026ecea379c623390fb538"
-            },
-            params: {
-                per_page: limite,
-                page: pagina
-            }
-        })
-            .then((response => {
-                if (response.data.length > 0) {
-
-                    response.data.map((x, i) =>
-                        xxx.push(x)
-                    )
-                    setCargandopaginados(cargandopaginados + 1)
-                } else {
-                    setCargandopaginados(false)
-                    setPropaginados(xxx)
-
-                    async function desta(data) {
-                        const des = []
-                        await data.map((d, dd) =>
-                            d.featured ?
-                                (
-                                    des.push(d)
-                                )
-                                :
-                                (null)
-                        )
-                        setDestacados(des)
-                        // console.log(des);
-
-                    }
-                    desta(xxx)
-                }
-            }))
-            .catch(err => {
-                return err
-            })
-    }
-    function resultadosbusquedausuario(data) {
-        if (data === null) {
-            setBusqueda([])
-        } else {
-
-            const lista = propaginados.filter(item => {
-                return (item.name.toLowerCase().includes(data.toLowerCase()))
-            })
-
-            const dataNueva = data.split(" ")
-            // console.log(dataNueva);
-
-            const listax = []
-            propaginados.map((item, k) => {
-                return (
-                    item.attributes.map(it => {
-                        return (
-                            it.options.map(z => {
-
-
-                                dataNueva.map(d => {
-                                    if (z.toLowerCase().includes(d.toLowerCase())) {
-                                        return listax.push(propaginados[k])
-                                    }
-                                })
-
-
-                            })
-                        )
-                    })
-                )
-            })
-            Array.prototype.unique = function (a) {
-                return function () { return this.filter(a) }
-            }(function (a, b, c) {
-                return c.indexOf(a, b + 1) < 0
-            });
-            console.log(listax.unique());
-
-            //FUNCIONA
-            // const listax = []
-            // propaginados.map((item, k) => {
-            //     return (
-            //         item.attributes.map(it => {
-            //             return (
-            //                 it.options.map(z => {
-            //                     if (z.toLowerCase().includes(data.toLowerCase())) {
-            //                         return listax.push(propaginados[k])
-            //                     }
-            //                 })
-            //             )
-            //         })
-            //     )
-            // })
-            // console.log(listax);
-
-
-
-
-            setBusqueda(lista)
-        }
-    }
     return (
         <Provider value={
             {
@@ -313,12 +201,7 @@ function ProductosProvider({ children }) {
                 filtrados,
                 resultadofiltro,
                 eliminafiltro,
-                pedirproductospaginados,
-                propaginados,
-                cargandopaginados,
-                destacados,
-                busqueda,
-                resultadosbusquedausuario
+
             }
         }>
             {children}

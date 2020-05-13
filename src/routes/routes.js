@@ -7,8 +7,6 @@ import LayoutHome from '../layouts/layoutsHome';
 import Notfound from '../pages/notfound';
 import Home from '../pages/home';
 import Despachos from '../pages/despachos';
-import Tienda from '../pages/tienda';
-import Productos from '../pages/productos';
 import Resultados from '../pages/resultados'
 
 const routes = [
@@ -21,23 +19,6 @@ const routes = [
                 path: '/',
                 component: Home,
                 exact: true
-            },
-            {
-                path: '/tienda',
-                component: Tienda,
-                exact: false,
-                routes: [
-                    {
-                        path: '/tienda',
-                        component: Tienda,
-                        exact: true
-                    },
-                    {
-                        path: '/tienda/productos',
-                        component: Productos,
-                        exact: true
-                    }
-                ]
             },
             {
                 path: '/despachos',
@@ -53,9 +34,7 @@ const routes = [
                 component: Notfound
             }
         ]
-    },
-
-
+    }
 ]
 
 export default routes;

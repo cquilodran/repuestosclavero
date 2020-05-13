@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { ProductosContext } from '../../context/productos'
+import React from 'react'
 import Tituloseccion from '../../components/tituloseccion';
 import { useInView } from 'react-intersection-observer';
 
@@ -10,15 +9,8 @@ import chilexpress from '../../assets/chilexpress-min.jfif'
 import starken from '../../assets/starken-min.jfif'
 
 const Despachos = () => {
-    const { pedirproductospaginados, cargandopaginados } = useContext(ProductosContext)
-    const [contador, setContador] = useState(1)
 
-    useEffect(() => {
-        if (cargandopaginados !== false) {
-            pedirproductospaginados(100, contador)
-            setContador(contador + 1)
-        }
-    }, [cargandopaginados])
+
     const [visto, inView] = useInView({ threshold: 0 })
 
     if (inView) {

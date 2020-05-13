@@ -1,9 +1,14 @@
 @import "../../scss/index.scss";
 
-.notfound{
-    margin-top: 10vh;
-    padding: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.notfound {
+  background-color: red;
+  height: 45vh;
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    text-transform: uppercase;
+    color: white;
+  }
 }
