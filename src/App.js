@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import routes from './routes';
 import { ProductosProvider } from './context/productos'
+import { ProviderUser } from './context/user/ContextUser'
 
 
 function App() {
 
   return (
-      <ProductosProvider>
+    <ProductosProvider>
+      <ProviderUser>
         <Router>
           <Switch>
             {
@@ -17,7 +19,8 @@ function App() {
             }
           </Switch>
         </Router>
-      </ProductosProvider>
+      </ProviderUser>
+    </ProductosProvider>
   );
 }
 
