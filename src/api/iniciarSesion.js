@@ -1,1 +1,1 @@
-const { } 
+const { basePath, apiVersion } from ''
