@@ -52,6 +52,10 @@ const Header = () => {
                         <FiTruck size='1.5em' color="white" className="icono" />
                         Despachos
                     </Link>
+                    <Link to='/sesion' className="menu-item" onClick={activamenu}>
+                        <FiTruck size='1.5em' color="white" className="icono" />
+                        Sesion
+                    </Link>
                 </div>
                 <div className="header__nav__rrss">
                     <a href="https://wa.me/56982044499?text=Me%20gustaría%20cotizar" target='blank'>
