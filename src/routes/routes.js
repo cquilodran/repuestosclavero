@@ -7,7 +7,8 @@ import LayoutHome from '../layouts/layoutsHome';
 import Notfound from '../pages/notfound';
 import Home from '../pages/home';
 import Despachos from '../pages/despachos';
-import Resultados from '../pages/resultados'
+// import Resultados from '../pages/resultados'
+import Sesion from '../pages/sesion'
 
 const routes = [
     {
@@ -26,8 +27,8 @@ const routes = [
                 exact: true
             },
             {
-                path: '/resultados',
-                component: Resultados,
+                path: '/sesion',
+                component: Sesion,
                 exact: true
             },
             {
