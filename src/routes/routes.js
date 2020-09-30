@@ -21,7 +21,7 @@ const routes = [
         exact: false,
         routes: [
             {
-                path: '/',
+                path: '/panel-administrador',
                 component: HomePanelAdministrador,
                 exact: true
             }

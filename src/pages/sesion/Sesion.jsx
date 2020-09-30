@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { iniciarSesion } from '../../api/iniciarSesion'
 import { } from '../../api/auth'
+import { ContextUserContext } from '../../context/user/ContextUser'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../api/config'
+
 
 const Sesion = () => {
+  const { usuario } = useContext(ContextUserContext)
   const { register, errors, handleSubmit } = useForm()
   const onSubmit = async data => {
     const resultado = await iniciarSesion(data)
-    console.log(resultado);
+    console.log(resultado)
+    if (resultado.ok) {
+      localStorage.setItem(ACCESS_TOKEN, resultado.accessToken)
+      localStorage.setItem(REFRESH_TOKEN, resultado.refreshToken)
+      window.location.href = '/panel-administrador'
+    } else {
+      alert(resultado.message)
+    }
   }
 
   useEffect(() => {
-    //Efecto
-    return () => {
-
+    if (usuario.user_id) {
+      window.location.href = '/panel-administrador'
     }
-  }, [])
+    return () => {
+    }
+  }, [usuario])
   return (
     <div className="pt-5">
       <Container className='pt-5'>
