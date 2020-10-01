@@ -27,8 +27,6 @@ const LayOutPanelAdministrador = (props) => {
 }
 
 function LoadRoutes(props) {
-  console.log(props);
-
   const { routes } = props;
   return (
     <Switch>
@@ -39,7 +37,10 @@ function LoadRoutes(props) {
             path={route.path}
             exact={route.exact}
             component={route.component}
-            routes={routes}
+          // render={
+          //   props =>
+          //     <route.component subroutes={route.subroutes} />
+          // }
           />
         ))
       }

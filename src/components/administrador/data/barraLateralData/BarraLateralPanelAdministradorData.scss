@@ -1,0 +1,15 @@
+.BarraLateralPanelAdministradorData {
+  .link {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid black;
+  }
+  .activo {
+    // background-color: grey;
+    box-shadow: 1px 1px 1px grey;
+    justify-content: center;
+    border-radius: 10px;
+    border-right: 0px solid black;
+  }
+}

@@ -3,6 +3,7 @@ import { ContextUserContext } from '../../../context/user/ContextUser'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import { } from 'react-bootstrap-icons'
 import { LinkContainer } from 'react-router-bootstrap'
+import { logout } from '../../../api/auth'
 
 
 const HeaderPanelAdministrador = () => {
@@ -31,7 +32,7 @@ const HeaderPanelAdministrador = () => {
               Stock
             </NavItem>
           </LinkContainer>
-          <LinkContainer to='/panel-administrador/data'>
+          <LinkContainer to='/panel-administrador/data/proveedores'>
             <NavItem className='nav-link' eventkey={4}>
               Data
             </NavItem>
@@ -48,7 +49,12 @@ const HeaderPanelAdministrador = () => {
           </LinkContainer>
         </Nav>
         <Nav>
-          <Nav.Link href="#deets">
+          <LinkContainer to='/'>
+            <NavItem className='nav-link' eventkey={7} onClick={logout}>
+              Panel general
+            </NavItem>
+          </LinkContainer>
+          <Nav.Link href="#deets" onClick={logout}>
             Salir
           </Nav.Link>
           <Nav.Link eventKey={2} href="#memes">

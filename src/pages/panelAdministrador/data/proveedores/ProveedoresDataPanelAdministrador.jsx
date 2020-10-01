@@ -1,12 +1,28 @@
 import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import BarraLateralPanelAdministradorData from '../../../../components/administrador/data/barraLateralData'
+import ProveedoresData from '../../../../components/administrador/data/proveedores'
 
 const ProveedoresDataPanelAdministrador = () => {
+
+  const menu = [
+    { nombre: "Proveedores", link: "/panel-administrador/data/proveedores" },
+    { nombre: "Sucursales", link: "/panel-administrador/data/proveedores" },
+    { nombre: "Unidades", link: "/panel-administrador/data/proveedores" },
+    { nombre: "Documentos", link: "/panel-administrador/data/proveedores" },
+    { nombre: "Usuarios", link: "/panel-administrador/data/proveedores" }
+  ]
   return (
-    <div>
-      <p>
-        Pagina para gestionar proveedores en la seccion data -> proveedores
-      </p>
-    </div>
+    <Container fluid>
+      <Row className='pt-5 pb-5'>
+        <Col md={2}>
+          <BarraLateralPanelAdministradorData data={menu} activo={0} />
+        </Col>
+        <Col md={10}>
+          <ProveedoresData />
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
