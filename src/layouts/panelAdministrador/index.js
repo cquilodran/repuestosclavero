@@ -1,1 +1,1 @@
-export { default } from './PanelAdministrador'
+export { default } from './LayOutPanelAdministrador'

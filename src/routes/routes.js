@@ -1,6 +1,6 @@
 // Layouts
 
-import LayoutHome from '../layouts/layoutsHome';
+import LayoutHome from '../layouts/layoutWeb';
 
 // Page web
 
@@ -12,8 +12,10 @@ import Sesion from '../pages/sesion'
 // Pages administrador
 
 import LayOutPanelAdministrador from '../layouts/panelAdministrador'
+import LayOutPanelAdministradorData from '../layouts/panelAdministradorData'
 import HomePanelAdministrador from '../pages/panelAdministrador/home'
-
+import DataPanelAdministrador from '../pages/panelAdministrador/data'
+import ProveedoresDataPanelAdministrador from '../pages/panelAdministrador/data/proveedores'
 const routes = [
     {
         path: '/panel-administrador',
@@ -21,9 +23,21 @@ const routes = [
         exact: false,
         routes: [
             {
-                path: '/panel-administrador',
+                path: '/panel-administrador/home',
                 component: HomePanelAdministrador,
                 exact: true
+            },
+            {
+                path: '/panel-administrador/data',
+                component: LayOutPanelAdministradorData,
+                exact: false,
+                subroutes: [
+                    {
+                        path: '/panel-administrador/data/proveedores',
+                        component: ProveedoresDataPanelAdministrador,
+                        exact: true
+                    }
+                ]
             }
         ]
     },

@@ -9,6 +9,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../api/config'
 
 const Sesion = () => {
   const { usuario } = useContext(ContextUserContext)
+  console.log(usuario);
   const { register, errors, handleSubmit } = useForm()
   const onSubmit = async data => {
     const resultado = await iniciarSesion(data)
@@ -16,7 +17,7 @@ const Sesion = () => {
     if (resultado.ok) {
       localStorage.setItem(ACCESS_TOKEN, resultado.accessToken)
       localStorage.setItem(REFRESH_TOKEN, resultado.refreshToken)
-      window.location.href = '/panel-administrador'
+      window.location.href = '/panel-administrador/home'
     } else {
       alert(resultado.message)
     }
@@ -24,7 +25,7 @@ const Sesion = () => {
 
   useEffect(() => {
     if (usuario.user_id) {
-      window.location.href = '/panel-administrador'
+      window.location.href = '/panel-administrador/home'
     }
     return () => {
     }
