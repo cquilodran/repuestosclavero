@@ -3,11 +3,21 @@ import { getListaProveedores } from '../../../../../api/backend'
 import { Modal, Button, Spinner } from 'react-bootstrap'
 import DetalleListaProveedoresDataProveedores from '../detalleListaProveedors'
 
-const ListaProveedoresDataProveedores = (props) => {
-
-
+const ListaProveedoresDataProveedores = () => {
   const [modalShow, setModalShow] = useState(false)
   const [lista, setLista] = useState(null)
+
+
+  function actualizarLista() {
+    getListaProveedores()
+      .then(lista => {
+        if (lista.ok === false) {
+          setModalShow(true)
+        } else {
+          setLista(lista)
+        }
+      })
+  }
 
   useEffect(() => {
     getListaProveedores()
@@ -30,12 +40,13 @@ const ListaProveedoresDataProveedores = (props) => {
             <Spinner animation="border" role="status">
             </Spinner>
           </>
-          : <DetalleListaProveedoresDataProveedores data={lista} setLista={setLista} />
+          : <DetalleListaProveedoresDataProveedores data={lista} actualizarLista={actualizarLista} />
       }
       <ModalError
         show={modalShow}
         onHide={() => setModalShow(false)}
       />
+
     </div>
   )
 }
@@ -58,4 +69,5 @@ function ModalError(props) {
     </Modal>
   );
 }
+
 export default ListaProveedoresDataProveedores

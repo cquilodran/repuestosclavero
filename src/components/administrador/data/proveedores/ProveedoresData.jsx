@@ -9,7 +9,7 @@ import './ProveedoresData.scss'
 const ProveedoresData = () => {
   return (
     <div className="Proveedores_data">
-      <h2>Lista de Proveedores</h2>
+      <h2>Lista de Proveedores</h2> <span></span>
       <Row>
         <Col md={10}>
           <FormularioBusquedaDataProveedores />

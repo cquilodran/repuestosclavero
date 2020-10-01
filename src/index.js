@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 // import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'toasted-notes/src/styles.css';
-import './scss/estilos.css'
+// import 'toasted-notes/src/styles.css';
+import './scss/estilos.scss'
 import * as serviceWorker from './serviceWorker';
 
 
