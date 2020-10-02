@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 import { PlusCircle } from 'react-bootstrap-icons'
 
@@ -7,6 +7,7 @@ import ListaProveedoresDataProveedores from './listaProveedores'
 import './ProveedoresData.scss'
 
 const ProveedoresData = () => {
+  const [nuevoRegistro, setNuevoRegistro] = useState(false)
   return (
     <div className="Proveedores_data">
       <h2>Lista de Proveedores</h2> <span></span>
@@ -20,18 +21,22 @@ const ProveedoresData = () => {
               <Tooltip>Nuevo registro</Tooltip>
             }
           >
-            <PlusCircle className="text-primary" size="1.5em" />
+            <PlusCircle
+              className="text-primary"
+              size="1.5em"
+              onClick={() => setNuevoRegistro(true)}
+            />
           </OverlayTrigger>
         </Col>
       </Row>
       <hr />
       <Row>
         <Col>
-          <ListaProveedoresDataProveedores />
+          <ListaProveedoresDataProveedores nuevoRegistro={nuevoRegistro} setNuevoRegistro={setNuevoRegistro} />
         </Col>
       </Row>
     </div>
   )
 }
-
+// mejor hare un contexto general que gestione lo que se debe mostrar en los componentes, esta muy complicado gestionarlo individualmente
 export default ProveedoresData

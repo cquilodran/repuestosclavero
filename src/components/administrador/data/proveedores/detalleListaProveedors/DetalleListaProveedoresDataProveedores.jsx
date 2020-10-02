@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Table, OverlayTrigger, Tooltip, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
 import { Pencil, ClipboardCheck, ClipboardX, Eye } from 'react-bootstrap-icons'
 import { useForm } from 'react-hook-form'
-import { putActDesProveedor, editarProveedorApi } from '../../../../../api/backend'
+import { putActDesProveedor, editarProveedorApi } from '../../../../../api/proveedor'
+import { ContextProveedor } from '../../../../../context/contextProveedores'
+import { getListaProveedores } from '../../../../../api/proveedor'
 
 const DetalleListaProveedoresDataProveedores = (props) => {
-  const { proveedores } = props.data
-  const { actualizarLista } = props
-  // const { register, errors, handleSubmit } = useForm()
+  const { state: { listaProveedores }, dispatch } = useContext(ContextProveedor)
+
   const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" });
@@ -18,6 +19,16 @@ const DetalleListaProveedoresDataProveedores = (props) => {
     if (respuesta.ok) {
       actualizarLista()
     }
+  }
+  function actualizarLista() {
+    getListaProveedores()
+      .then(lista => {
+        if (lista.ok === false) {
+          setModalShow(true)
+        } else {
+          dispatch({ type: "ACTUALIZA_LISTA_PROVEEDORES", lista })
+        }
+      })
   }
   const verRegistro = (dat) => {
     setModalShow2({ ver: true, datos: dat })
@@ -47,7 +58,7 @@ const DetalleListaProveedoresDataProveedores = (props) => {
         </thead>
         <tbody>
           {
-            proveedores.docs.map((y, z) =>
+            listaProveedores.map((y, z) =>
               <tr key={z} className={y.activo ? "" : "text-danger"}>
                 {
                   y.activo ?
@@ -122,16 +133,12 @@ const DetalleListaProveedoresDataProveedores = (props) => {
           <EditarRegistro
             show={modalShow3.ver}
             informacion={modalShow3.informacion}
-            // register={register}
-            // handleSubmit={handleSubmit}
-            // errors={errors}
             actualizarLista={actualizarLista}
             onHide={() => setModalShow3({ ver: false, informacion: "" })}
           />
           :
           null
       }
-
     </div>
   )
 }
@@ -450,4 +457,5 @@ function EditarRegistro(props) {
     </Modal>
   );
 }
+
 export default DetalleListaProveedoresDataProveedores

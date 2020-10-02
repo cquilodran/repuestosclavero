@@ -61,22 +61,41 @@ export async function editarProveedorApi(id, data, page = 1) {
     return { ok: "error", e }
   }
 }
-// export function crearProveedorApi(data, token) {
-//   const url = `${basePath}/${apiVersion}/crear-proveedor`
-//   const params = {
-//     method: "POST",
-//     body: JSON.stringify(data),
-//     headers: {
-//       "content-Type": "application/json",
-//       Authorization: token
-//     }
-//   }
-//   return fetch(url, params)
-//     .then(response => {
-//       return response.json()
-//     })
-//     .then(result => {
-//       return result
-//     })
-//     .catch(e => { return { ok: "error", e } })
-// }
+export async function crearProveedorApi(data) {
+  const token = getAccessTokenApi()
+  const url = `${basePath}/${apiVersion}/crear-proveedor`
+  const params = {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return { ok: "error", e }
+  }
+}
+export async function buscaProveedor(values) {
+  const token = getAccessTokenApi()
+  const url = `${basePath}/${apiVersion}/busca-proveedor`
+  const params = {
+    method: "PUT",
+    body: JSON.stringify(values),
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return { ok: false, e }
+  }
+}
