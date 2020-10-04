@@ -4,6 +4,12 @@ import { useForm } from 'react-hook-form'
 import { PlusCircle } from 'react-bootstrap-icons'
 import { getListaSucursalesApi, postCrearSucursalesApi } from '../../../../api/sucursales'
 import { ContextSucursales } from '../../../../context/contextSucursales'
+import { withRouter } from 'react-router-dom'
+import queryString from 'query-string'
+import Pagination from "react-js-pagination";
+
+
+
 const SucursalesData = () => {
   const { state: { docs, busqueda, actualizando }, dispatch } = useContext(ContextSucursales)
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
