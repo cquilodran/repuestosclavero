@@ -8,14 +8,24 @@ import FormularioBusquedaDataProveedores from './formularioBusqueda'
 import ListaProveedoresDataProveedores from './listaProveedores'
 import './ProveedoresData.scss'
 import { ContextProveedor } from '../../../../context/contextProveedores'
+import { withRouter } from 'react-router-dom'
+import queryString from 'query-string'
+import Pagination from "react-js-pagination";
 
-const ProveedoresData = () => {
-  const { state: { docs, busqueda, actualizando }, dispatch } = useContext(ContextProveedor)
+
+const ProveedoresData = (props) => {
+  const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextProveedor)
+  // console.log({ docs, busqueda, actualizando, limit, page, pages, total });
+  const { location, history } = props
+  const { page = 1 } = queryString.parse(location.search)
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
   const [modalShow, setModalShow] = useState(false)
 
-  function actualizarLista() {
-    getListaProveedores()
+  function handlePageChange(pageNumber) {
+    history.push(`${location.pathname}?page=${pageNumber}`)
+  }
+  function actualizarLista(page) {
+    getListaProveedores(page)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
@@ -25,9 +35,9 @@ const ProveedoresData = () => {
       })
   }
   useEffect(() => {
-    actualizarLista()
+    actualizarLista(page)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [page])
 
   if (busqueda) {
     return (
@@ -100,7 +110,22 @@ const ProveedoresData = () => {
                 <ListaProveedoresDataProveedores />
               </Col>
             </Row>
-
+            {
+              total > 10 ?
+                <Row>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Row>
+                :
+                null
+            }
           </>
       }
       <CrearRegistro
@@ -115,6 +140,7 @@ const ProveedoresData = () => {
     </div >
   )
 }
+
 function CrearRegistro(props) {
   const { actualizarLista } = props
   const [loading, setLoading] = useState(false)
@@ -363,4 +389,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default React.memo(ProveedoresData) 
+export default React.memo(withRouter(ProveedoresData))
