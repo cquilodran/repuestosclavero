@@ -32,7 +32,7 @@ const HeaderPanelAdministrador = () => {
               Stock
             </NavItem>
           </LinkContainer>
-          <LinkContainer to='/panel-administrador/data/proveedores'>
+          <LinkContainer to='/panel-administrador/data/sucursales'>
             <NavItem className='nav-link' eventkey={4}>
               Data
             </NavItem>

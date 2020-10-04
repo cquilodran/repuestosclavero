@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
-import { } from '../api/proveedor'
+import React, { useReducer } from 'react'
 import { reducerProveedores } from '../reducer/reducerProveedores'
 
 const ContextProveedor = React.createContext()
@@ -11,14 +10,11 @@ const ProviderProveedor = ({ children }) => {
     limit: 10,
     page: 1,
     pages: 1,
-    total: 0
+    total: 0,
+    busqueda: false,
+    actualizando: true
   })
 
-
-
-  useEffect(() => {
-
-  }, [])
   return (
     <Provider value={{
       state,

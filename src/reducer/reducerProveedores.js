@@ -1,19 +1,31 @@
 
-// import { putActDesProveedor } from '../api/proveedor'
+export function reducerProveedores(state, action) {
+  const { proveedores: { docs, limit, page, pages, total } } = action.lista
 
-export async function reducerProveedores(state, action) {
   switch (action.type) {
     case "ACTUALIZA_LISTA_PROVEEDORES":
-      console.log(action)
-
-
-
+      return {
+        ...state,
+        docs: docs,
+        limit: limit,
+        page: page,
+        pages: pages,
+        total: total,
+        actualizando: false,
+        busqueda: false
+      }
+    case "BUSQUEDA_PROVEEDORES":
 
       return {
         ...state,
-        listaProveedores: action.lista.proveedores
+        docs: docs,
+        limit: limit,
+        page: page,
+        pages: pages,
+        total: total,
+        actualizando: false,
+        busqueda: true
       }
-
     default:
       return state
   }

@@ -1,19 +1,40 @@
-import React from 'react'
-import { Form } from 'react-bootstrap'
+import React, { useContext, useState } from 'react'
+import { Form, Modal, Button } from 'react-bootstrap'
 import { Search, XSquare } from 'react-bootstrap-icons'
-import { buscaProveedor } from '../../../../../api/proveedor'
+import { buscaProveedor, getListaProveedores } from '../../../../../api/proveedor'
 import { useForm } from 'react-hook-form'
+import { ContextProveedor } from '../../../../../context/contextProveedores'
 
 import './FormularioBusquedaDataProveedores.scss'
 
 const FormularioBusquedaDataProveedores = () => {
-  const { register, errors, handleSubmit, reset } = useForm()
+  const { dispatch } = useContext(ContextProveedor)
+  const { register, handleSubmit, reset } = useForm()
+  const [modalShow, setModalShow] = useState(false)
 
   const onSubmit = values => {
-    // console.log(values);
     buscaProveedor(values)
-      .then(resultados => {
-        console.log(resultados);
+      .then(lista => {
+        if (lista.ok === false) {
+          setModalShow(true)
+        } else {
+          if (lista.message === "Toda la lista") {
+            dispatch({ type: "ACTUALIZA_LISTA_PROVEEDORES", lista })
+          } else {
+            dispatch({ type: "BUSQUEDA_PROVEEDORES", lista })
+          }
+        }
+      })
+  }
+  const cancelar = () => {
+    reset()
+    getListaProveedores()
+      .then(lista => {
+        if (lista.ok === false) {
+          setModalShow(true)
+        } else {
+          dispatch({ type: "ACTUALIZA_LISTA_PROVEEDORES", lista })
+        }
       })
   }
 
@@ -34,13 +55,35 @@ const FormularioBusquedaDataProveedores = () => {
             onClick={handleSubmit(onSubmit)}
           />
           <XSquare
-            onClick={reset}
+            onClick={cancelar}
             size="1.5em"
           />
         </Form.Group>
       </Form>
+      <ModalMensaje
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </div>
   )
 }
-
+function ModalMensaje(props) {
+  return (
+    <Modal
+      {...props}
+      size="sm"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Error en la busqueda
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Cerrar</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 export default FormularioBusquedaDataProveedores

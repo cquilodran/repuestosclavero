@@ -1,245 +1,90 @@
-import React, { useState, useContext } from 'react'
-import { Table, OverlayTrigger, Tooltip, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
-import { Pencil, ClipboardCheck, ClipboardX, Eye } from 'react-bootstrap-icons'
+import React, { useState, useContext, useEffect } from 'react'
+import { Col, OverlayTrigger, Row, Tooltip, Modal, Form, Button, Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { putActDesProveedor, editarProveedorApi } from '../../../../../api/proveedor'
-import { ContextProveedor } from '../../../../../context/contextProveedores'
-import { getListaProveedores } from '../../../../../api/proveedor'
+import { PlusCircle } from 'react-bootstrap-icons'
+import { getListaSucursalesApi, postCrearSucursalesApi } from '../../../../api/sucursales'
+import { ContextSucursales } from '../../../../context/contextSucursales'
+const SucursalesData = () => {
+  const { state: { docs, busqueda, actualizando }, dispatch } = useContext(ContextSucursales)
+  const [nuevoRegistro, setNuevoRegistro] = useState(false)
+  const [modalShow, setModalShow] = useState(false)
 
-const DetalleListaProveedoresDataProveedores = (props) => {
-  const { state: { docs }, dispatch } = useContext(ContextProveedor)
+  console.log(docs);
 
-  const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
-  const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
-  const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" });
-
-  const activarDesactivar = async (id, estado) => {
-    const respuesta = await putActDesProveedor(id, !estado)
-    setModalShow({ ver: true, txt: respuesta.message })
-    if (respuesta.ok) {
-      actualizarLista()
-    }
-  }
   function actualizarLista() {
-    getListaProveedores()
+    getListaSucursalesApi()
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
-          dispatch({ type: "ACTUALIZA_LISTA_PROVEEDORES", lista })
+          dispatch({ type: "ACTUALIZA_LISTA_SUCURSALES", lista })
         }
       })
   }
-  const verRegistro = (dat) => {
-    setModalShow2({ ver: true, datos: dat })
-  }
-  const editarRegistro = (y) => {
-    setModalShow3({ ver: true, informacion: y })
-  }
-  const heads = ["Activo", "Nombre", "Celular", "Acciones"]
+
+  useEffect(() => {
+    actualizarLista()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            {
-              heads.map((x, i) =>
-                x === "Acciones" ?
-                  <th key={i} colSpan="3" >
-                    {x}
-                  </th>
-                  :
-                  <th key={i} >
-                    {x}
-                  </th>
-              )
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {
-            docs.map((y, z) =>
-              <tr key={z} className={y.activo ? "" : "text-danger"}>
-                {
-                  y.activo ?
-                    <td>Sí</td>
-                    :
-                    <td>No</td>
-                }
-                <td>{y.nombre}</td>
-                <td>{y.celular}</td>
-                <td><Pencil
-                  width="1.5em"
-                  size="1.5em"
-                  onClick={() => editarRegistro(y)}
-                /></td>
-                <td>
-                  {
-                    y.activo ?
-                      <OverlayTrigger
-                        key={'top'}
-                        overlay={
-                          <Tooltip >
-                            Desactivar
-                            </Tooltip>
-                        }
-                      >
-                        < ClipboardCheck
-                          width="1.5em"
-                          size="1.5em"
-                          onClick={() => activarDesactivar(y._id, y.activo)}
-                        />
-                      </OverlayTrigger>
-                      :
-                      <OverlayTrigger
-                        key={'top'}
-                        overlay={
-                          <Tooltip >
-                            Activar
-                            </Tooltip>
-                        }
-                      >
-                        <ClipboardX
-                          width="1.5em"
-                          size="1.5em"
-                          onClick={() => activarDesactivar(y._id, y.activo)}
-                        />
-                      </OverlayTrigger>
-                  }
-                </td>
-                <td><Eye
-                  width="1.5em"
-                  size="1.5em"
-                  onClick={() => verRegistro(y)}
-                />
-                </td>
-              </tr>
-            )
-          }
-        </tbody>
-      </Table>
-      <ModalMensajes
-        show={modalShow.ver}
-        txt={modalShow.txt}
-        onHide={() => setModalShow({ ver: false, txt: "" })}
-      />
-      <VerRegisto
-        show={modalShow2.ver}
-        onHide={() => setModalShow2({ ver: false, datos: "" })}
-        data={modalShow2.datos}
-      />
+      <h2>Lista Sucursales</h2>
       {
-        modalShow3.ver ?
-          <EditarRegistro
-            show={modalShow3.ver}
-            informacion={modalShow3.informacion}
-            actualizarLista={actualizarLista}
-            onHide={() => setModalShow3({ ver: false, informacion: "" })}
-          />
+        !actualizando ?
+          <>
+            <Spinner animation="border" role="status"></Spinner>
+          </>
           :
-          null
+          <>
+            <Row>
+              <Col xs={10}>
+                Aca va el formulario de busqueda
+              </Col>
+              <Col>
+                <OverlayTrigger
+                  overlay={
+                    <Tooltip>Nuevo registro</Tooltip>
+                  }
+                >
+                  <PlusCircle
+                    className="text-primary"
+                    size="1.5em"
+                    onClick={() => setNuevoRegistro(true)}
+                  />
+                </OverlayTrigger>
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col>
+                Aca componente de lista
+              </Col>
+            </Row>
+          </>
       }
+      <CrearRegistro
+        show={nuevoRegistro}
+        onHide={() => setNuevoRegistro(false)}
+        actualizarLista={actualizarLista}
+      />
+      <ModalMensaje
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </div>
   )
 }
-function ModalMensajes(props) {
-  return (
-    <Modal
-      {...props}
-      size="sm"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {props.txt}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Cerrar</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-function VerRegisto(props) {
-  const { data } = props
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {data.nombre} {data.rut}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Row>
-          <Col>
-            <strong>Estado: </strong> {data.activo ? "Activo" : "Inactivo"}
-          </Col>
-          <Col>
-            <strong>Dirección: </strong> {data.direccion}
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Col xs={12} >
-            <h4>Contacto principal</h4>
-          </Col>
-          <Col>
-            <strong>Representante: </strong> {data.representante}
-          </Col>
-          <Col>
-            <strong>Celular: </strong> {data.celular}
-          </Col>
-          <Col>
-            <strong>Email: </strong> {data.email}
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Col xs={12} >
-            <h4>Contacto secundario</h4>
-          </Col>
-          <Col>
-            <strong>Celular: </strong> {data.celular2}
-          </Col>
-          <Col>
-            <strong>Email: </strong> {data.email2}
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="outline-dark">Close</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-function EditarRegistro(props) {
-  const { informacion, actualizarLista } = props
+function CrearRegistro(props) {
+  const { actualizarLista } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
-  const { register, errors, handleSubmit } = useForm({
-    defaultValues: {
-      nombre: informacion.nombre,
-      rut: informacion.rut,
-      celular: informacion.celular,
-      celular2: informacion.celular2,
-      direccion: informacion.direccion,
-      email: informacion.email,
-      email2: informacion.email2,
-      representante: informacion.representante,
-      web: informacion.web,
-    }
-  })
+  const { register, errors, handleSubmit } = useForm()
 
   const onSubmit = values => {
     setLoading(true)
     setTimeout(() => {
-      editarProveedorApi(informacion._id, values)
+      postCrearSucursalesApi(values)
         .then(respuesta => {
           setLoading(false)
           setMessagePut(respuesta.message)
@@ -255,10 +100,12 @@ function EditarRegistro(props) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+
+      onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Editando proveedor: <strong>{informacion.nombre}</strong>
+          Creando Sucursal
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -437,7 +284,7 @@ function EditarRegistro(props) {
                   />
                 </Button>
                 :
-                <Button type='submit'>Actualizar</Button>
+                <Button type='submit'>Crear</Button>
 
             }
           </Form.Row>
@@ -452,10 +299,28 @@ function EditarRegistro(props) {
             :
             null
         }
-        <Button onClick={props.onHide}>Cancelar / Salir</Button>
+        <Button onClick={props.onHide} variant="outline-warning">Cancelar / Salir</Button>
       </Modal.Footer>
     </Modal>
   );
 }
-
-export default DetalleListaProveedoresDataProveedores
+function ModalMensaje(props) {
+  return (
+    <Modal
+      {...props}
+      size="sm"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          No puedes ver esta información
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Cerrar</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+export default SucursalesData
