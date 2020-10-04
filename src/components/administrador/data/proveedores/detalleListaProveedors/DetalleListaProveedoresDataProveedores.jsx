@@ -8,6 +8,7 @@ import { getListaProveedores } from '../../../../../api/proveedor'
 
 const DetalleListaProveedoresDataProveedores = (props) => {
   const { state: { docs }, dispatch } = useContext(ContextProveedor)
+  const { paginaActual } = props
 
   const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
@@ -17,11 +18,11 @@ const DetalleListaProveedoresDataProveedores = (props) => {
     const respuesta = await putActDesProveedor(id, !estado)
     setModalShow({ ver: true, txt: respuesta.message })
     if (respuesta.ok) {
-      actualizarLista()
+      actualizarLista(paginaActual)
     }
   }
   function actualizarLista() {
-    getListaProveedores()
+    getListaProveedores(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
@@ -135,6 +136,7 @@ const DetalleListaProveedoresDataProveedores = (props) => {
             informacion={modalShow3.informacion}
             actualizarLista={actualizarLista}
             onHide={() => setModalShow3({ ver: false, informacion: "" })}
+            paginaActual={paginaActual}
           />
           :
           null
@@ -219,7 +221,7 @@ function VerRegisto(props) {
   );
 }
 function EditarRegistro(props) {
-  const { informacion, actualizarLista } = props
+  const { informacion, actualizarLista, paginaActual } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm({
@@ -244,7 +246,7 @@ function EditarRegistro(props) {
           setLoading(false)
           setMessagePut(respuesta.message)
           if (respuesta.ok) {
-            actualizarLista()
+            actualizarLista(paginaActual)
           }
         })
     }, 1000);

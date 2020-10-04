@@ -7,13 +7,14 @@ import { ContextProveedor } from '../../../../../context/contextProveedores'
 
 import './FormularioBusquedaDataProveedores.scss'
 
-const FormularioBusquedaDataProveedores = () => {
+const FormularioBusquedaDataProveedores = (props) => {
+  const { paginaActual } = props
   const { dispatch } = useContext(ContextProveedor)
   const { register, handleSubmit, reset } = useForm()
   const [modalShow, setModalShow] = useState(false)
 
   const onSubmit = values => {
-    buscaProveedor(values)
+    buscaProveedor(values, paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
@@ -28,7 +29,7 @@ const FormularioBusquedaDataProveedores = () => {
   }
   const cancelar = () => {
     reset()
-    getListaProveedores()
+    getListaProveedores(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)

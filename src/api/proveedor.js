@@ -80,9 +80,9 @@ export async function crearProveedorApi(data) {
     return { ok: "error", e }
   }
 }
-export async function buscaProveedor(values) {
+export async function buscaProveedor(values, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/busca-proveedor`
+  const url = `${basePath}/${apiVersion}/busca-proveedor?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(values),

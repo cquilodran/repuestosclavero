@@ -15,7 +15,6 @@ import Pagination from "react-js-pagination";
 
 const ProveedoresData = (props) => {
   const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextProveedor)
-  // console.log({ docs, busqueda, actualizando, limit, page, pages, total });
   const { location, history } = props
   const { page = 1 } = queryString.parse(location.search)
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
@@ -45,7 +44,7 @@ const ProveedoresData = (props) => {
         <h2>Busqueda de Proveedores</h2>
         <Row>
           <Col md={10}>
-            <FormularioBusquedaDataProveedores />
+            <FormularioBusquedaDataProveedores paginaActual={page} />
           </Col>
           <Col md={2}>
             <OverlayTrigger
@@ -64,11 +63,32 @@ const ProveedoresData = (props) => {
         <hr />
         {
           docs.length > 0 ?
-            <Row>
-              <Col>
-                <ListaProveedoresDataProveedores />
-              </Col>
-            </Row>
+            <>
+              <Row>
+                <Col>
+                  <ListaProveedoresDataProveedores paginaActual={page} />
+                </Col>
+              </Row>
+              {
+                total > 10 ?
+                  <Row>
+                    <Col>
+                      <Pagination
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        activePage={parseInt(page)}
+                        itemsCountPerPage={limit}
+                        totalItemsCount={total}
+                        pageRangeDisplayed={3}
+                        onChange={handlePageChange}
+                      />
+                    </Col>
+                  </Row>
+                  :
+                  null
+              }
+            </>
+
             :
             <h3>Sin resultados en tu busqueda</h3>
         }
@@ -88,7 +108,7 @@ const ProveedoresData = (props) => {
           <>
             <Row>
               <Col xs={10}>
-                <FormularioBusquedaDataProveedores />
+                <FormularioBusquedaDataProveedores paginaActual={page} />
               </Col>
               <Col xs={2}>
                 <OverlayTrigger
@@ -107,21 +127,23 @@ const ProveedoresData = (props) => {
             <hr />
             <Row>
               <Col>
-                <ListaProveedoresDataProveedores />
+                <ListaProveedoresDataProveedores paginaActual={page} />
               </Col>
             </Row>
             {
               total > 10 ?
                 <Row>
-                  <Pagination
-                    itemClass="page-item"
-                    linkClass="page-link"
-                    activePage={parseInt(page)}
-                    itemsCountPerPage={limit}
-                    totalItemsCount={total}
-                    pageRangeDisplayed={3}
-                    onChange={handlePageChange}
-                  />
+                  <Col>
+                    <Pagination
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activePage={parseInt(page)}
+                      itemsCountPerPage={limit}
+                      totalItemsCount={total}
+                      pageRangeDisplayed={3}
+                      onChange={handlePageChange}
+                    />
+                  </Col>
                 </Row>
                 :
                 null
@@ -132,6 +154,8 @@ const ProveedoresData = (props) => {
         show={nuevoRegistro}
         onHide={() => setNuevoRegistro(false)}
         actualizarLista={actualizarLista}
+        paginaActual={page}
+
       />
       <ModalMensaje
         show={modalShow}
@@ -142,7 +166,7 @@ const ProveedoresData = (props) => {
 }
 
 function CrearRegistro(props) {
-  const { actualizarLista } = props
+  const { actualizarLista, paginaActual } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm()
@@ -155,7 +179,7 @@ function CrearRegistro(props) {
           setLoading(false)
           setMessagePut(respuesta.message)
           if (respuesta.ok) {
-            actualizarLista()
+            actualizarLista(paginaActual)
           }
         })
     }, 1000);

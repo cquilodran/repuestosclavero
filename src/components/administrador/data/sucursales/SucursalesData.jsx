@@ -10,13 +10,18 @@ import Pagination from "react-js-pagination";
 
 
 
-const SucursalesData = () => {
-  const { state: { docs, busqueda, actualizando }, dispatch } = useContext(ContextSucursales)
+const SucursalesData = (props) => {
+  const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextSucursales)
+  const { location, history } = props
+  const { page = 1 } = queryString.parse(location.search)
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
   const [modalShow, setModalShow] = useState(false)
 
   console.log(docs);
 
+  function handlePageChange(pageNumber) {
+    history.push(`${location.pathname}?page=${pageNumber}`)
+  }
   function actualizarLista() {
     getListaSucursalesApi()
       .then(lista => {
@@ -31,13 +36,13 @@ const SucursalesData = () => {
   useEffect(() => {
     actualizarLista()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [page])
 
   return (
     <div>
       <h2>Lista Sucursales</h2>
       {
-        !actualizando ?
+        actualizando ?
           <>
             <Spinner animation="border" role="status"></Spinner>
           </>
@@ -67,12 +72,29 @@ const SucursalesData = () => {
                 Aca componente de lista
               </Col>
             </Row>
+            {
+              total > 10 ?
+                <Row>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Row>
+                :
+                null
+            }
           </>
       }
       <CrearRegistro
         show={nuevoRegistro}
         onHide={() => setNuevoRegistro(false)}
         actualizarLista={actualizarLista}
+        paginaActual={page}
       />
       <ModalMensaje
         show={modalShow}
@@ -82,7 +104,7 @@ const SucursalesData = () => {
   )
 }
 function CrearRegistro(props) {
-  const { actualizarLista } = props
+  const { actualizarLista, paginaActual } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm()
@@ -95,7 +117,7 @@ function CrearRegistro(props) {
           setLoading(false)
           setMessagePut(respuesta.message)
           if (respuesta.ok) {
-            actualizarLista()
+            actualizarLista(paginaActual)
           }
         })
     }, 1000);
@@ -329,4 +351,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default SucursalesData
+export default withRouter(SucursalesData) 
