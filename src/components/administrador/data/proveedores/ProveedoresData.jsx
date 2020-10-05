@@ -6,7 +6,6 @@ import { getListaProveedores, crearProveedorApi } from '../../../../api/proveedo
 
 import FormularioBusquedaDataProveedores from './formularioBusqueda'
 import ListaProveedoresDataProveedores from './listaProveedores'
-import './ProveedoresData.scss'
 import { ContextProveedor } from '../../../../context/contextProveedores'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
@@ -40,7 +39,7 @@ const ProveedoresData = (props) => {
 
   if (busqueda) {
     return (
-      <div className="Proveedores_data">
+      <div>
         <h2>Busqueda de Proveedores</h2>
         <Row>
           <Col md={10}>
@@ -92,6 +91,17 @@ const ProveedoresData = (props) => {
             :
             <h3>Sin resultados en tu busqueda</h3>
         }
+        <CrearRegistro
+          show={nuevoRegistro}
+          onHide={() => setNuevoRegistro(false)}
+          actualizarLista={actualizarLista}
+          paginaActual={page}
+
+        />
+        <ModalMensaje
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
       </div>
     )
   }

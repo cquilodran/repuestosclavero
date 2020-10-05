@@ -15,8 +15,16 @@ export function reducerSucursales(state, action) {
         busqueda: false
       }
     case "BUSCANDO_SUCURSALES":
-      console.log("BUSCANDO_SUCURSALES");
-      return state
+      return {
+        ...state,
+        docs: docs,
+        limit: limit,
+        page: page,
+        pages: pages,
+        total: total,
+        actualizando: false,
+        busqueda: true
+      }
     default:
       return state
   }

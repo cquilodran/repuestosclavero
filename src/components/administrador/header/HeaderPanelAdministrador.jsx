@@ -9,7 +9,7 @@ import { logout } from '../../../api/auth'
 const HeaderPanelAdministrador = () => {
   const { usuario: { sucursal_nombre } } = useContext(ContextUserContext)
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+    <Navbar collapseOnSelect expand="lg" className="bg-warning text-dark">
       <Navbar.Brand href="#home">
         Repuestos Clavero Chile | {sucursal_nombre}
       </Navbar.Brand>
@@ -66,4 +66,4 @@ const HeaderPanelAdministrador = () => {
   )
 }
 
-export default HeaderPanelAdministrador
+export default React.memo(HeaderPanelAdministrador)

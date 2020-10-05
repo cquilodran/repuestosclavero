@@ -11,7 +11,7 @@ const ProveedoresDataPanelAdministrador = () => {
       <Container fluid>
         <Row className='pt-5 pb-5'>
           <Col md={2}>
-            <BarraLateralPanelAdministradorData activo={0} />
+            <BarraLateralPanelAdministradorData activo={2} />
           </Col>
           <Col md={10}>
             <ProveedoresData />

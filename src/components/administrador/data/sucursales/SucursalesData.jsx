@@ -7,7 +7,8 @@ import { ContextSucursales } from '../../../../context/contextSucursales'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
 import Pagination from "react-js-pagination";
-
+import ListaSucursales from './listaSucursales'
+import FormularioBusquedaSucursales from './formularioBusqueda'
 
 
 const SucursalesData = (props) => {
@@ -17,13 +18,11 @@ const SucursalesData = (props) => {
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
   const [modalShow, setModalShow] = useState(false)
 
-  console.log(docs);
-
   function handlePageChange(pageNumber) {
     history.push(`${location.pathname}?page=${pageNumber}`)
   }
-  function actualizarLista() {
-    getListaSucursalesApi()
+  function actualizarLista(page) {
+    getListaSucursalesApi(page)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
@@ -34,10 +33,76 @@ const SucursalesData = (props) => {
   }
 
   useEffect(() => {
-    actualizarLista()
+    actualizarLista(page)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
+  if (busqueda) {
+    return (
+      <div>
+        <h2>Busqueda de Sucursales</h2>
+        <Row>
+          <Col md={10}>
+            <FormularioBusquedaSucursales paginaActual={page} />
+          </Col>
+          <Col md={2}>
+            <OverlayTrigger
+              overlay={
+                <Tooltip>Nuevo registro</Tooltip>
+              }
+            >
+              <PlusCircle
+                className="text-primary"
+                size="1.5em"
+                onClick={() => setNuevoRegistro(true)}
+              />
+            </OverlayTrigger>
+          </Col>
+        </Row>
+        <hr />
+        {
+          docs.length > 0 ?
+            <>
+              <Row>
+                <Col>
+                  <ListaSucursales paginaActual={page} />
+                </Col>
+              </Row>
+              {
+                total > 10 ?
+                  <Row>
+                    <Col>
+                      <Pagination
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        activePage={parseInt(page)}
+                        itemsCountPerPage={limit}
+                        totalItemsCount={total}
+                        pageRangeDisplayed={3}
+                        onChange={handlePageChange}
+                      />
+                    </Col>
+                  </Row>
+                  :
+                  null
+              }
+            </>
+            :
+            <h3>Sin resultados en tu busqueda</h3>
+        }
+        <CrearRegistro
+          show={nuevoRegistro}
+          onHide={() => setNuevoRegistro(false)}
+          actualizarLista={actualizarLista}
+          paginaActual={page}
 
+        />
+        <ModalMensaje
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
+      </div>
+    )
+  }
   return (
     <div>
       <h2>Lista Sucursales</h2>
@@ -50,7 +115,7 @@ const SucursalesData = (props) => {
           <>
             <Row>
               <Col xs={10}>
-                Aca va el formulario de busqueda
+                <FormularioBusquedaSucursales paginaActual={page} />
               </Col>
               <Col>
                 <OverlayTrigger
@@ -69,21 +134,23 @@ const SucursalesData = (props) => {
             <hr />
             <Row>
               <Col>
-                Aca componente de lista
+                <ListaSucursales paginaActual={page} />
               </Col>
             </Row>
             {
               total > 10 ?
                 <Row>
-                  <Pagination
-                    itemClass="page-item"
-                    linkClass="page-link"
-                    activePage={parseInt(page)}
-                    itemsCountPerPage={limit}
-                    totalItemsCount={total}
-                    pageRangeDisplayed={3}
-                    onChange={handlePageChange}
-                  />
+                  <Col>
+                    <Pagination
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activePage={parseInt(page)}
+                      itemsCountPerPage={limit}
+                      totalItemsCount={total}
+                      pageRangeDisplayed={3}
+                      onChange={handlePageChange}
+                    />
+                  </Col>
                 </Row>
                 :
                 null
@@ -157,34 +224,15 @@ function CrearRegistro(props) {
               }
             </Form.Group>
             <Form.Group as={Col}>
-              <Form.Label>RUT</Form.Label>
+              <Form.Label>Dirección</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="RUT proveedor"
-                name="rut"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Rut es requerido'
-                  }
-                })}
-              />
-              {
-                errors.rut && <span className='text-danger text-small d-block my-1'>{errors.rut.message}</span>
-              }
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Direccion</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Nombre proveedor"
+                placeholder="Dirección sucursal"
                 name="direccion"
                 ref={register({
                   required: {
                     value: true,
-                    message: 'Direccion es requerido'
+                    message: 'Dirección sucursal es requerido'
                   }
                 })}
               />
@@ -195,107 +243,20 @@ function CrearRegistro(props) {
           </Form.Row>
           <Form.Row>
             <Form.Group as={Col}>
-              <Form.Label>Representante</Form.Label>
+              <Form.Label>Notas</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Nombre contacto"
-                name="representante"
+                placeholder="Notas sucursal"
+                name="notas"
                 ref={register({
                   required: {
                     value: true,
-                    message: 'Representante es requerido'
+                    message: 'Notas es requerido'
                   }
                 })}
               />
               {
-                errors.representante && <span className='text-danger text-small d-block my-1'>{errors.representante.message}</span>
-              }
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Celular</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Celular contacto"
-                name="celular"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Celular es requerido'
-                  }
-                })}
-              />
-              {
-                errors.celular && <span className='text-danger text-small d-block my-1'>{errors.celular.message}</span>
-              }
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Email proveedor"
-                name="email"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Email es requerido'
-                  }
-                })}
-              />
-              {
-                errors.email && <span className='text-danger text-small d-block my-1'>{errors.email.message}</span>
-              }
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Sitio web</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Sitio web"
-                name="web"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Sitio web es requerido'
-                  }
-                })}
-              />
-              {
-                errors.web && <span className='text-danger text-small d-block my-1'>{errors.web.message}</span>
-              }
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Celular 2</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Celular secundario"
-                name="celular2"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Celular 2 es requerido'
-                  }
-                })}
-              />
-              {
-                errors.celular2 && <span className='text-danger text-small d-block my-1'>{errors.celular2.message}</span>
-              }
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Email 2</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Email secundario"
-                name="email2"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Email 2 es requerido'
-                  }
-                })}
-              />
-              {
-                errors.email2 && <span className='text-danger text-small d-block my-1'>{errors.email2.message}</span>
+                errors.notas && <span className='text-danger text-small d-block my-1'>{errors.notas.message}</span>
               }
             </Form.Group>
           </Form.Row>

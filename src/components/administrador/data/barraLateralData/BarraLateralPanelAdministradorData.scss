@@ -6,10 +6,11 @@
     // border-right: 1px solid black;
   }
   .activo {
-    // background-color: grey;
-    box-shadow: 1px 2px 5px rgb(160, 160, 160);
+    background-color: orange;
+    // box-shadow: 1px 2px 5px rgb(160, 160, 160);
     justify-content: center;
-    border-radius: 10px;
-    // border-right: 0px solid black;
+    // border-radius: 10px;
+    border-right: 10px solid black;
+    color: white;
   }
 }

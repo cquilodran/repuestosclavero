@@ -69,11 +69,13 @@ const DetalleListaProveedoresDataProveedores = (props) => {
                 }
                 <td>{y.nombre}</td>
                 <td>{y.celular}</td>
-                <td><Pencil
-                  width="1.5em"
-                  size="1.5em"
-                  onClick={() => editarRegistro(y)}
-                /></td>
+                <td>
+                  <Pencil
+                    width="1.5em"
+                    size="1.5em"
+                    onClick={() => editarRegistro(y)}
+                  />
+                </td>
                 <td>
                   {
                     y.activo ?

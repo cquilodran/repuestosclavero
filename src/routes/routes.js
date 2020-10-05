@@ -17,6 +17,7 @@ import HomePanelAdministrador from '../pages/panelAdministrador/home'
 // import DataPanelAdministrador from '../pages/panelAdministrador/data'
 import ProveedoresDataPanelAdministrador from '../pages/panelAdministrador/data/proveedores'
 import SucursalesPage from '../pages/panelAdministrador/data/sucursales'
+import UsuariosPage from '../pages/panelAdministrador/data/usuarios'
 const routes = [
     {
         path: '/panel-administrador',
@@ -36,6 +37,11 @@ const routes = [
             {
                 path: '/panel-administrador/data/sucursales',
                 component: SucursalesPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/usuarios',
+                component: UsuariosPage,
                 exact: true
             }
         ]

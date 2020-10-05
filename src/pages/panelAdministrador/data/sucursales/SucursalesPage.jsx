@@ -9,7 +9,7 @@ const SucursalesPage = () => {
       <Container fluid>
         <Row className='pt-5 pb-5'>
           <Col md={2}>
-            <BarraLateralPanelAdministradorData activo={1} />
+            <BarraLateralPanelAdministradorData activo={0} />
           </Col>
           <Col md={10}>
             <SucursalesData />
