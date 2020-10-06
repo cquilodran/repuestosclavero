@@ -1,5 +1,4 @@
 export function reducerSucursales(state, action) {
-  console.log(action.lista);
   const { lista: { docs, limit, page, pages, total } } = action.lista
 
   switch (action.type) {

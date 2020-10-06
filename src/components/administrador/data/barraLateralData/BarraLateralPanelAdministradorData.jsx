@@ -8,7 +8,7 @@ const menu = [
   { nombre: "Sucursales", link: "/panel-administrador/data/sucursales" },
   { nombre: "Usuarios", link: "/panel-administrador/data/usuarios" },
   { nombre: "Proveedores", link: "/panel-administrador/data/proveedores" },
-  { nombre: "Documentos", link: "/panel-administrador/data/proveedores" },
+  { nombre: "Documentos", link: "/panel-administrador/data/documentos" },
   { nombre: "Producto", link: "/panel-administrador/data/producto" },
   { nombre: "Categorias", link: "/panel-administrador/data/categorias" },
   { nombre: "Atributos", link: "/panel-administrador/data/atributos" },

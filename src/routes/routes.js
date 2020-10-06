@@ -18,6 +18,8 @@ import HomePanelAdministrador from '../pages/panelAdministrador/home'
 import ProveedoresDataPanelAdministrador from '../pages/panelAdministrador/data/proveedores'
 import SucursalesPage from '../pages/panelAdministrador/data/sucursales'
 import UsuariosPage from '../pages/panelAdministrador/data/usuarios'
+import DocumentosPage from '../pages/panelAdministrador/data/documentos'
+
 const routes = [
     {
         path: '/panel-administrador',
@@ -42,6 +44,11 @@ const routes = [
             {
                 path: '/panel-administrador/data/usuarios',
                 component: UsuariosPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/documentos',
+                component: DocumentosPage,
                 exact: true
             }
         ]
