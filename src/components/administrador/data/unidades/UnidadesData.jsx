@@ -2,17 +2,17 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Col, OverlayTrigger, Row, Tooltip, Modal, Form, Button, Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { getListaDocumentosApi, postCrearDocumentosApi } from '../../../../api/documentos'
-import { ContextDocumentos } from '../../../../context/contextDocumentos'
+import { postCrearUnidadesApi, getListaUnidadesApi } from '../../../../api/unidades'
+import { ContextUnidades } from '../../../../context/contextUnidades'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
 import Pagination from "react-js-pagination";
-import ListaDocumentos from './listaDocumentos'
-import FormularioBusquedaDocumentos from './formularioBusqueda'
+import ListaUnidades from './listaUnidades'
+import FormularioBusquedaUnidades from './formularioBusqueda'
 
 
-const DocumentosData = (props) => {
-  const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextDocumentos)
+const UnidadesData = (props) => {
+  const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextUnidades)
   const { location, history } = props
   const { page = 1 } = queryString.parse(location.search)
   const [nuevoRegistro, setNuevoRegistro] = useState(false)
@@ -22,12 +22,12 @@ const DocumentosData = (props) => {
     history.push(`${location.pathname}?page=${pageNumber}`)
   }
   function actualizarLista(page) {
-    getListaDocumentosApi(page)
+    getListaUnidadesApi(page)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
-          dispatch({ type: "ACTUALIZA_LISTA_DOCUMENTOS", lista })
+          dispatch({ type: "ACTUALIZA_LISTA_UNIDADES", lista })
         }
       })
   }
@@ -42,7 +42,7 @@ const DocumentosData = (props) => {
         <h2>Busqueda de Sucursales</h2>
         <Row>
           <Col md={10}>
-            <FormularioBusquedaDocumentos paginaActual={page} />
+            <FormularioBusquedaUnidades paginaActual={page} />
           </Col>
           <Col md={2}>
             <OverlayTrigger
@@ -64,7 +64,7 @@ const DocumentosData = (props) => {
             <>
               <Row>
                 <Col>
-                  <ListaDocumentos paginaActual={page} />
+                  <ListaUnidades paginaActual={page} />
                 </Col>
               </Row>
               {
@@ -105,7 +105,7 @@ const DocumentosData = (props) => {
   }
   return (
     <div>
-      <h2>Lista Documentos</h2>
+      <h2>Lista Unidades</h2>
       {
         actualizando ?
           <>
@@ -115,7 +115,7 @@ const DocumentosData = (props) => {
           <>
             <Row>
               <Col xs={10}>
-                <FormularioBusquedaDocumentos paginaActual={page} />
+                <FormularioBusquedaUnidades paginaActual={page} />
               </Col>
               <Col>
                 <OverlayTrigger
@@ -134,7 +134,7 @@ const DocumentosData = (props) => {
             <hr />
             <Row>
               <Col>
-                <ListaDocumentos paginaActual={page} />
+                <ListaUnidades paginaActual={page} />
               </Col>
             </Row>
             {
@@ -178,7 +178,7 @@ function CrearRegistro(props) {
 
   const onSubmit = values => {
     setLoading(true)
-    postCrearDocumentosApi(values)
+    postCrearUnidadesApi(values)
       .then(respuesta => {
         setLoading(false)
         setMessagePut(respuesta.message)
@@ -198,27 +198,42 @@ function CrearRegistro(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Creando Documento
+          Creando Unidades
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Row>
             <Form.Group as={Col}>
-              <Form.Label>Nombre Documento</Form.Label>
+              <Form.Label>Nombre corto</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Nombre documento"
                 name="nombre"
                 ref={register({
                   required: {
                     value: true,
-                    message: 'Nombre documento es requerido'
+                    message: 'Nombre corto o sigla es requerido'
                   }
                 })}
               />
               {
                 errors.nombre && <span className='text-danger text-small d-block my-1'>{errors.nombre.message}</span>
+              }
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Nombre largo</Form.Label>
+              <Form.Control
+                type="text"
+                name="nombreLargo"
+                ref={register({
+                  required: {
+                    value: true,
+                    message: 'Nombre largo es requerido'
+                  }
+                })}
+              />
+              {
+                errors.nombreLargo && <span className='text-danger text-small d-block my-1'>{errors.nombreLargo.message}</span>
               }
             </Form.Group>
           </Form.Row>
@@ -227,7 +242,6 @@ function CrearRegistro(props) {
               <Form.Label>Notas</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Notas documento"
                 name="notas"
                 ref={register({
                   required: {
@@ -293,4 +307,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default withRouter(DocumentosData) 
+export default withRouter(UnidadesData) 

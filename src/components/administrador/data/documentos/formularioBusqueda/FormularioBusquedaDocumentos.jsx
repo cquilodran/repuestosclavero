@@ -1,46 +1,46 @@
 import React, { useContext, useState } from 'react'
 import { Form, Modal, Button } from 'react-bootstrap'
 import { Search, XSquare } from 'react-bootstrap-icons'
-import { buscaSucursalApi, getListaSucursalesApi } from '../../../../../api/sucursales'
+import { getListaDocumentosApi, buscaDocumentosApi } from '../../../../../api/documentos'
 import { useForm } from 'react-hook-form'
-import { ContextSucursales } from '../../../../../context/contextSucursales'
+import { ContextDocumentos } from '../../../../../context/contextDocumentos'
 
-import './FormularioBusquedaSucursales.scss'
+import './FormularioBusquedaDocumentos.scss'
 
-const FormularioBusquedaSucursales = (props) => {
+const FormularioBusquedaDocumentos = (props) => {
   const { paginaActual } = props
-  const { dispatch } = useContext(ContextSucursales)
+  const { dispatch } = useContext(ContextDocumentos)
   const { register, handleSubmit, reset } = useForm()
   const [modalShow, setModalShow] = useState(false)
 
   const onSubmit = values => {
-    buscaSucursalApi(values, paginaActual)
+    buscaDocumentosApi(values, paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
           if (lista.message === "Toda la lista") {
-            dispatch({ type: "ACTUALIZA_LISTA_SUCURSALES", lista })
+            dispatch({ type: "ACTUALIZA_LISTA_DOCUMENTOS", lista })
           } else {
-            dispatch({ type: "BUSCANDO_SUCURSALES", lista })
+            dispatch({ type: "BUSCANDO_DOCUMENTOS", lista })
           }
         }
       })
   }
   const cancelar = () => {
     reset()
-    getListaSucursalesApi(paginaActual)
+    getListaDocumentosApi(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
-          dispatch({ type: "ACTUALIZA_LISTA_SUCURSALES", lista })
+          dispatch({ type: "ACTUALIZA_LISTA_DOCUMENTOS", lista })
         }
       })
   }
 
   return (
-    <div className='FormularioBusquedaSucursales'>
+    <div className='FormularioBusquedaDocumentos'>
       <Form inline onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
           <Form.Control
@@ -87,4 +87,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default FormularioBusquedaSucursales
+export default FormularioBusquedaDocumentos

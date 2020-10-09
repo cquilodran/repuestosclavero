@@ -181,17 +181,6 @@ function CrearRegistro(props) {
   const [listaSucursales, setListaSucursales] = useState([])
   const { register, errors, handleSubmit } = useForm()
 
-  // const onSubmit = values => {
-  //   setLoading(true)
-  //   postCrearUsuariosApi(values)
-  //     .then(respuesta => {
-  //       setLoading(false)
-  //       setMessagePut(respuesta.message)
-  //       if (respuesta.ok) {
-  //         actualizarLista(paginaActual)
-  //       }
-  //     })
-  // }
   const onSubmit = values => {
     if (values.password !== values.rpassword) {
       alert("Contraseñas deben ser iguales")

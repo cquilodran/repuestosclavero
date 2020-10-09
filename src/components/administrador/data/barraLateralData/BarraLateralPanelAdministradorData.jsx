@@ -11,10 +11,11 @@ const menu = [
   { nombre: "Documentos", link: "/panel-administrador/data/documentos" },
   { nombre: "Producto", link: "/panel-administrador/data/producto" },
   { nombre: "Categorias", link: "/panel-administrador/data/categorias" },
-  { nombre: "Atributos", link: "/panel-administrador/data/atributos" },
-  { nombre: "Tipo", link: "/panel-administrador/data/tipo" },
-  { nombre: "Marca", link: "/panel-administrador/data/marca" },
-  { nombre: "Unidades", link: "/panel-administrador/data/proveedores" },
+  { nombre: "Unidades", link: "/panel-administrador/data/unidades" },
+  { nombre: "Lado vehículo", link: "/panel-administrador/data/lado-vehiculo" },
+  { nombre: "Marca Producto", link: "/panel-administrador/data/marca-producto" },
+  { nombre: "Marca vehículo", link: "/panel-administrador/data/marca-vehiculo" },
+  { nombre: "Modelo vehículo", link: "/panel-administrador/data/modelo-vehiculo" },
 
 ]
 const BarraLateralPanelAdministradorData = ({ activo }) => {

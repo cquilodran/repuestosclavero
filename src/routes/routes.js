@@ -19,6 +19,7 @@ import ProveedoresDataPanelAdministrador from '../pages/panelAdministrador/data/
 import SucursalesPage from '../pages/panelAdministrador/data/sucursales'
 import UsuariosPage from '../pages/panelAdministrador/data/usuarios'
 import DocumentosPage from '../pages/panelAdministrador/data/documentos'
+import UnidadesPage from '../pages/panelAdministrador/data/unidades'
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
             {
                 path: '/panel-administrador/data/documentos',
                 component: DocumentosPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/unidades',
+                component: UnidadesPage,
                 exact: true
             }
         ]

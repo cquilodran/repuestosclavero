@@ -2,27 +2,27 @@ import React, { useState, useContext } from 'react'
 import { Table, OverlayTrigger, Tooltip, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
 import { Pencil, ClipboardCheck, ClipboardX, Eye } from 'react-bootstrap-icons'
 import { useForm } from 'react-hook-form'
-import { ContextSucursales } from '../../../../../context/contextSucursales'
-import { putActDesSucursalApi, getListaSucursalesApi, editarSucursalesApi } from '../../../../../api/sucursales'
+import { ContextDocumentos } from '../../../../../context/contextDocumentos'
+import { editarDocumentosApi, putActDesDocumentosApi, getListaDocumentosApi } from '../../../../../api/documentos'
 
 
 
 
 
-const DetalleListaSucursales = (props) => {
-  const { state: { docs }, dispatch } = useContext(ContextSucursales)
+const DetalleListaDocumentos = (props) => {
+  const { state: { docs }, dispatch } = useContext(ContextDocumentos)
   const { paginaActual } = props
   const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" })
 
   function actualizarLista() {
-    getListaSucursalesApi(paginaActual)
+    getListaDocumentosApi(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
-          dispatch({ type: "ACTUALIZA_LISTA_SUCURSALES", lista })
+          dispatch({ type: "ACTUALIZA_LISTA_DOCUMENTOS", lista })
         }
       })
   }
@@ -30,7 +30,7 @@ const DetalleListaSucursales = (props) => {
     setModalShow3({ ver: true, informacion: y })
   }
   const activarDesactivar = async (id, estado) => {
-    const respuesta = await putActDesSucursalApi(id, !estado)
+    const respuesta = await putActDesDocumentosApi(id, !estado)
     setModalShow({ ver: true, txt: respuesta.message })
     if (respuesta.ok) {
       actualizarLista(paginaActual)
@@ -39,7 +39,7 @@ const DetalleListaSucursales = (props) => {
   const verRegistro = (dat) => {
     setModalShow2({ ver: true, datos: dat })
   }
-  const heads = ["Nombre", "Dirección", "Acciones"]
+  const heads = ["Nombre", "Acciones"]
   return (
     <div>
       <Table striped bordered hover responsive>
@@ -64,7 +64,6 @@ const DetalleListaSucursales = (props) => {
             docs.map((y, z) =>
               <tr key={z} className={y.activo ? "" : "text-danger"}>
                 <td>{y.nombre}</td>
-                <td>{y.direccion}</td>
                 <td>
                   <Pencil
                     width="1.5em"
@@ -161,7 +160,7 @@ function VerRegisto(props) {
       <Modal.Body>
         <Row>
           <Col>
-            <strong>Dirección: </strong> {data.direccion}
+            <strong>Documeto: </strong> {data.nombre}
           </Col>
           <Col>
             <strong>Notas: </strong> {data.notas}
@@ -181,23 +180,19 @@ function EditarRegistro(props) {
   const { register, errors, handleSubmit } = useForm({
     defaultValues: {
       nombre: informacion.nombre,
-      direccion: informacion.direccion,
       notas: informacion.notas
     }
   })
-
   const onSubmit = values => {
     setLoading(true)
-    setTimeout(() => {
-      editarSucursalesApi(informacion._id, values)
-        .then(respuesta => {
-          setLoading(false)
-          setMessagePut(respuesta.message)
-          if (respuesta.ok) {
-            actualizarLista(paginaActual)
-          }
-        })
-    }, 1000);
+    editarDocumentosApi(informacion._id, values)
+      .then(respuesta => {
+        setLoading(false)
+        setMessagePut(respuesta.message)
+        if (respuesta.ok) {
+          actualizarLista(paginaActual)
+        }
+      })
   }
   return (
     <Modal
@@ -208,7 +203,7 @@ function EditarRegistro(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Editando sucursal: <strong>{informacion.nombre}</strong>
+          Editando Documento:  <strong>{informacion.nombre}</strong>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -229,23 +224,6 @@ function EditarRegistro(props) {
               />
               {
                 errors.nombre && <span className='text-danger text-small d-block my-1'>{errors.nombre.message}</span>
-              }
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Dirección</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Dirección sucursal"
-                name="direccion"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Dirección sucursal es requerido'
-                  }
-                })}
-              />
-              {
-                errors.direccion && <span className='text-danger text-small d-block my-1'>{errors.direccion.message}</span>
               }
             </Form.Group>
           </Form.Row>
@@ -300,4 +278,4 @@ function EditarRegistro(props) {
     </Modal>
   );
 }
-export default DetalleListaSucursales
+export default DetalleListaDocumentos

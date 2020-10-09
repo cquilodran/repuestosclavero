@@ -1,1 +1,1 @@
-export { default } from './FormularioBusquedaSucursales'
+export { default } from './FormularioBusquedaDocumentos'
