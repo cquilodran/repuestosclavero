@@ -24,6 +24,7 @@ import LadoVehiculoPage from '../pages/panelAdministrador/data/ladoVehiculo'
 import MarcaProductoPage from '../pages/panelAdministrador/data/marcaProducto'
 import MarcaVehiculoPage from '../pages/panelAdministrador/data/marcaVehiculo'
 import ModeloVehiculoPage from '../pages/panelAdministrador/data/modeloVehiculo'
+import CategoriaProdutoPage from '../pages/panelAdministrador/data/categoriaProducto'
 
 const routes = [
     {
@@ -79,6 +80,11 @@ const routes = [
             {
                 path: '/panel-administrador/data/modelo-vehiculo',
                 component: ModeloVehiculoPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/categorias',
+                component: CategoriaProdutoPage,
                 exact: true
             }
         ]
