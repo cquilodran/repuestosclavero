@@ -21,6 +21,9 @@ import UsuariosPage from '../pages/panelAdministrador/data/usuarios'
 import DocumentosPage from '../pages/panelAdministrador/data/documentos'
 import UnidadesPage from '../pages/panelAdministrador/data/unidades'
 import LadoVehiculoPage from '../pages/panelAdministrador/data/ladoVehiculo'
+import MarcaProductoPage from '../pages/panelAdministrador/data/marcaProducto'
+import MarcaVehiculoPage from '../pages/panelAdministrador/data/marcaVehiculo'
+import ModeloVehiculoPage from '../pages/panelAdministrador/data/modeloVehiculo'
 
 const routes = [
     {
@@ -61,6 +64,21 @@ const routes = [
             {
                 path: '/panel-administrador/data/lado-vehiculo',
                 component: LadoVehiculoPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/marca-producto',
+                component: MarcaProductoPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/marca-vehiculo',
+                component: MarcaVehiculoPage,
+                exact: true
+            },
+            {
+                path: '/panel-administrador/data/modelo-vehiculo',
+                component: ModeloVehiculoPage,
                 exact: true
             }
         ]
