@@ -6,6 +6,9 @@ import { postCrearProductoApi, getListaProductoApi } from '../../../../api/produ
 import { getListaMarcaVehiculoActivoApi } from '../../../../api/marcaVehiculo'
 import { getListaModeloVehiculoActivoApi } from '../../../../api/modeloVehiculo'
 import { getListaCategoriaActivoApi } from '../../../../api/categoriaProducto'
+import { getListaLadoVehiculoActivoApi } from '../../../../api/ladoVehiculo'
+import { getListaMarcaProductoActivoApi } from '../../../../api/marcaProducto'
+import { getListaUnidadesActivoApi } from '../../../../api/unidades'
 import { ContextProductos } from '../../../../context/contextProductos'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
@@ -184,6 +187,8 @@ function CrearRegistro(props) {
   const [modeloVehiculosLista, setmodeloVehiculosLista] = useState([])
   const [categoriasLista, setcategoriasLista] = useState([])
   const [ladoVehiculoLista, setladoVehiculoLista] = useState([])
+  const [marcaProductoLista, setmarcaProductoLista] = useState([])
+  const [unidadMedidaLista, setunidadMedidaLista] = useState([])
 
   const onSubmit = values => {
     setLoading(true)
@@ -192,7 +197,7 @@ function CrearRegistro(props) {
         setLoading(false)
         setMessagePut(respuesta.message)
         if (respuesta.ok) {
-          actualizarLista(paginaActual)
+          actualizarLista(paginaActual) //?
         }
       })
   }
@@ -223,6 +228,36 @@ function CrearRegistro(props) {
           setMessagePut(lista.message)
         } else {
           setcategoriasLista(lista.docs)
+        }
+      })
+  }, [])
+  useEffect(() => {
+    getListaLadoVehiculoActivoApi(1, 1000)
+      .then(lista => {
+        if (lista.ok === false) {
+          setMessagePut(lista.message)
+        } else {
+          setladoVehiculoLista(lista.docs)
+        }
+      })
+  }, [])
+  useEffect(() => {
+    getListaMarcaProductoActivoApi(1, 1000)
+      .then(lista => {
+        if (lista.ok === false) {
+          setMessagePut(lista.message)
+        } else {
+          setmarcaProductoLista(lista.docs)
+        }
+      })
+  }, [])
+  useEffect(() => {
+    getListaUnidadesActivoApi(1, 1000)
+      .then(lista => {
+        if (lista.ok === false) {
+          setMessagePut(lista.message)
+        } else {
+          setunidadMedidaLista(lista.docs)
         }
       })
   }, [])

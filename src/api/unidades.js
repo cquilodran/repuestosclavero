@@ -20,6 +20,25 @@ export async function getListaUnidadesApi(page = 1, limit = 10) {
     return e
   }
 }
+export async function getListaUnidadesActivoApi(page = 1, limit = 10) {
+  const token = getAccessTokenApi()
+
+  const url = `${basePath}/${apiVersion}/lista-unidad-activo?page=${page}&limit=${limit}`
+  const params = {
+    method: "GET",
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return e
+  }
+}
 export async function postCrearUnidadesApi(data) {
   const token = getAccessTokenApi()
   const url = `${basePath}/${apiVersion}/crear-unidad`
