@@ -9,7 +9,7 @@ const menu = [
   { nombre: "Usuarios", link: "/panel-administrador/data/usuarios" },
   { nombre: "Proveedores", link: "/panel-administrador/data/proveedores" },
   { nombre: "Documentos", link: "/panel-administrador/data/documentos" },
-  { nombre: "Producto", link: "/panel-administrador/data/producto" },
+  { nombre: "Producto", link: "/panel-administrador/data/productos" },
   { nombre: "Categorias", link: "/panel-administrador/data/categorias" },
   { nombre: "Unidades", link: "/panel-administrador/data/unidades" },
   { nombre: "Lado vehículo", link: "/panel-administrador/data/lado-vehiculo" },
