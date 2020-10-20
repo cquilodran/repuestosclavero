@@ -64,7 +64,7 @@ const SucursalesData = (props) => {
             <>
               <Row>
                 <Col>
-                  <ListaSucursales paginaActual={page} />
+                  <ListaSucursales paginaactual={page} />
                 </Col>
               </Row>
               {
@@ -92,8 +92,8 @@ const SucursalesData = (props) => {
         <CrearRegistro
           show={nuevoRegistro}
           onHide={() => setNuevoRegistro(false)}
-          actualizarLista={actualizarLista}
-          paginaActual={page}
+          actualizarlista={actualizarLista}
+          paginaactual={page}
 
         />
         <ModalMensaje
@@ -134,7 +134,7 @@ const SucursalesData = (props) => {
             <hr />
             <Row>
               <Col>
-                <ListaSucursales paginaActual={page} />
+                <ListaSucursales paginaactual={page} />
               </Col>
             </Row>
             {
@@ -160,8 +160,8 @@ const SucursalesData = (props) => {
       <CrearRegistro
         show={nuevoRegistro}
         onHide={() => setNuevoRegistro(false)}
-        actualizarLista={actualizarLista}
-        paginaActual={page}
+        actualizarlista={actualizarLista}
+        paginaactual={page}
       />
       <ModalMensaje
         show={modalShow}
@@ -171,31 +171,28 @@ const SucursalesData = (props) => {
   )
 }
 function CrearRegistro(props) {
-  const { actualizarLista, paginaActual } = props
+  const { actualizarlista, paginaactual, ...restoprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm()
 
   const onSubmit = values => {
     setLoading(true)
-    setTimeout(() => {
-      postCrearSucursalesApi(values)
-        .then(respuesta => {
-          setLoading(false)
-          setMessagePut(respuesta.message)
-          if (respuesta.ok) {
-            actualizarLista(paginaActual)
-          }
-        })
-    }, 1000);
+    postCrearSucursalesApi(values)
+      .then(respuesta => {
+        setLoading(false)
+        setMessagePut(respuesta.message)
+        if (respuesta.ok) {
+          actualizarlista(paginaactual)
+        }
+      })
   }
   return (
     <Modal
-      {...props}
+      {...restoprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-
       onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>

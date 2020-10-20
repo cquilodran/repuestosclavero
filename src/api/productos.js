@@ -22,7 +22,7 @@ export async function getListaProductoApi(page = 1, limit = 10) {
 }
 export async function postCrearProductoApi(data) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/crear-categoria-productos`
+  const url = `${basePath}/${apiVersion}/crear-producto`
   const params = {
     method: "POST",
     body: JSON.stringify(data),
@@ -41,7 +41,7 @@ export async function postCrearProductoApi(data) {
 }
 export async function putActDesProductoApi(id, estado, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/activa-desactiva-categoria-productos/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/act-desac-producto/${id}?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify({ activo: estado }),
@@ -58,9 +58,30 @@ export async function putActDesProductoApi(id, estado, page = 1) {
     return e
   }
 }
+// export async function putActDesProductoEcommerceApi(id, estado, page = 1) {
+//   const token = getAccessTokenApi()
+//   const url = `${basePath}/${apiVersion}/act-desac-producto-ecommerce/${id}?page=${page}`
+//   const params = {
+//     method: "PUT",
+//     body: JSON.stringify({ ecommerce: estado }),
+//     headers: {
+//       "content-Type": "application/json",
+//       Authorization: token
+//     }
+//   }
+//   try {
+//     const response = await fetch(url, params)
+//     const result = await response.json()
+//     return result
+//   } catch (e) {
+//     return e
+//   }
+
+// }
 export async function buscaProductoApi(values, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/buscar-marca-vehiculo?page=${page}`
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  const url = `${basePath}/${apiVersion}/buscar-producto?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(values),
@@ -79,7 +100,7 @@ export async function buscaProductoApi(values, page = 1) {
 }
 export async function editarProductoApi(id, data, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/editar-categoria-productos/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/editar-producto/${id}?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(data),
@@ -98,7 +119,7 @@ export async function editarProductoApi(id, data, page = 1) {
 }
 export async function crearFotoProductoApi(image, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/crear-imagen-categoria-productos?page=${page}`
+  const url = `${basePath}/${apiVersion}/crear-imagen-producto?page=${page}`
   const formData = new FormData()
   // formData.append("imagen", image, imageName.name)
   formData.append("foto", image)
@@ -119,7 +140,7 @@ export async function crearFotoProductoApi(image, page = 1) {
   }
 }
 export async function getImagenApi(imageName, page = 1) {
-  const url = `${basePath}/${apiVersion}/get-imagen-categoria-productos/${imageName}?page=${page}`
+  const url = `${basePath}/${apiVersion}/get-imagen-productos/${imageName}?page=${page}`
   try {
     const response = await fetch(url)
     // const result = await response.json()

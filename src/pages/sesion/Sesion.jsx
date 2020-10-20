@@ -9,11 +9,9 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../api/config'
 
 const Sesion = () => {
   const { usuario } = useContext(ContextUserContext)
-  console.log(usuario);
   const { register, errors, handleSubmit } = useForm()
   const onSubmit = async data => {
     const resultado = await iniciarSesion(data)
-    console.log(resultado)
     if (resultado.ok) {
       localStorage.setItem(ACCESS_TOKEN, resultado.accessToken)
       localStorage.setItem(REFRESH_TOKEN, resultado.refreshToken)

@@ -13,7 +13,6 @@ import { useDropzone } from 'react-dropzone'
 // import FormularioBusquedaModeloVehiculo from './formularioBusqueda'
 
 import logo from '../../../../assets/logo-amarillo.png'
-import './CategoriaProducto.scss'
 
 const CategoriaProducto = (props) => {
   const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextCategoriaProducto)
@@ -74,34 +73,35 @@ const CategoriaProducto = (props) => {
                 </Col>
               </Row>
               {
-                total > 10 ?
-                  <Row>
-                    <Col>
-                      <Pagination
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        activePage={parseInt(page)}
-                        itemsCountPerPage={limit}
-                        totalItemsCount={total}
-                        pageRangeDisplayed={3}
-                        onChange={handlePageChange}
-                      />
-                    </Col>
-                  </Row>
-                  :
-                  null
+                total > 10 &&
+                <Row>
+                  <Col>
+                    <Pagination
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activePage={parseInt(page)}
+                      itemsCountPerPage={limit}
+                      totalItemsCount={total}
+                      pageRangeDisplayed={3}
+                      onChange={handlePageChange}
+                    />
+                  </Col>
+                </Row>
               }
             </>
             :
             <h3>Sin resultados en tu busqueda</h3>
         }
-        <CrearRegistro
-          show={nuevoRegistro}
-          onHide={() => setNuevoRegistro(false)}
-          actualizarLista={actualizarLista}
-          paginaActual={page}
+        {
+          nuevoRegistro &&
+          <CrearRegistro
+            show={nuevoRegistro}
+            onHide={() => setNuevoRegistro(false)}
+            actualizarlista={actualizarLista}
+            paginaactual={page}
 
-        />
+          />
+        }
         <ModalMensaje
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -145,31 +145,32 @@ const CategoriaProducto = (props) => {
               </Col>
             </Row>
             {
-              total > 10 ?
-                <Row>
-                  <Col>
-                    <Pagination
-                      itemClass="page-item"
-                      linkClass="page-link"
-                      activePage={parseInt(page)}
-                      itemsCountPerPage={limit}
-                      totalItemsCount={total}
-                      pageRangeDisplayed={3}
-                      onChange={handlePageChange}
-                    />
-                  </Col>
-                </Row>
-                :
-                null
+              total > 10 &&
+              <Row>
+                <Col>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Col>
+              </Row>
             }
           </>
       }
-      <CrearRegistro
-        show={nuevoRegistro}
-        onHide={() => setNuevoRegistro(false)}
-        actualizarLista={actualizarLista}
-        paginaActual={page}
-      />
+      {
+        nuevoRegistro &&
+        <CrearRegistro
+          show={nuevoRegistro}
+          onHide={() => setNuevoRegistro(false)}
+          actualizarlista={actualizarLista}
+          paginaactual={page}
+        />
+      }
       <ModalMensaje
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -178,39 +179,50 @@ const CategoriaProducto = (props) => {
   )
 }
 function CrearRegistro(props) {
-  const { actualizarLista, paginaActual } = props
+  const { actualizarlista, paginaactual, ...restoprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const [imagen, setImagen] = useState(null)
   const { register, errors, handleSubmit } = useForm()
 
   const onSubmit = values => {
-    setLoading(true)
-    crearFotoCategoriaApi(imagen.file)
-      .then(respuesta => {
-        if (respuesta.ok === false) {
+    console.log("CREANDO");
+    if (imagen === null) {
+      postCrearCategoriaApi(values)
+        .then(respuesta => {
+          setLoading(false)
           setMessagePut(respuesta.message)
-        } else {
-          values.imagen = respuesta.imageName
-          postCrearCategoriaApi(values)
-            .then(respuesta => {
-              setLoading(false)
-              setMessagePut(respuesta.message)
-              if (respuesta.ok) {
-                actualizarLista(paginaActual)
-              }
-            })
+          if (respuesta.ok) {
+            actualizarlista(paginaactual)
+          }
+        })
+    } else {
+      setLoading(true)
+      crearFotoCategoriaApi(imagen.file)
+        .then(respuesta => {
+          if (respuesta.ok === false) {
+            setMessagePut(respuesta.message)
+          } else {
+            values.imagen = respuesta.imageName
+            postCrearCategoriaApi(values)
+              .then(respuesta => {
+                setLoading(false)
+                setMessagePut(respuesta.message)
+                if (respuesta.ok) {
+                  actualizarlista(paginaactual)
+                }
+              })
+          }
         }
-      }
-      )
+        )
+    }
   }
   return (
     <Modal
-      {...props}
+      {...restoprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-
       onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>
@@ -219,7 +231,14 @@ function CrearRegistro(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+        >
           <Form.Row>
             <Form.Group as={Col}>
               < UploadImagen imagen={imagen} setImagen={setImagen} />
@@ -232,7 +251,7 @@ function CrearRegistro(props) {
                 ref={register({
                   required: {
                     value: true,
-                    message: 'Nombre corto o sigla es requerido'
+                    message: 'Nombre es requerido'
                   }
                 })}
               />
@@ -249,7 +268,7 @@ function CrearRegistro(props) {
                 name="notas"
                 ref={register({
                   required: {
-                    value: true,
+                    value: false,
                     message: 'Notas es requerido'
                   }
                 })}
@@ -279,12 +298,10 @@ function CrearRegistro(props) {
       </Modal.Body>
       <Modal.Footer >
         {
-          messagePut ?
-            <>
-              <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
-            </>
-            :
-            null
+          messagePut &&
+          <>
+            <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
+          </>
         }
         <Button onClick={props.onHide} variant="outline-warning">Cancelar / Salir</Button>
       </Modal.Footer>
@@ -314,9 +331,9 @@ function UploadImagen(props) {
       <input {...getInputProps()} />
       {
         isDragActive ?
-          <Image src={logo} roundedCircle className="img-categoria-producto" />
+          <Image src={logo} roundedCircle className="img-vista-registro" />
           :
-          <Image src={imagen ? imagen.preview : logo} roundedCircle className="img-categoria-producto" />
+          <Image src={imagen ? imagen.preview : logo} roundedCircle className="img-vista-registro" />
       }
     </div>
   )

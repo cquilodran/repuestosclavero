@@ -69,35 +69,36 @@ const ProveedoresData = (props) => {
                 </Col>
               </Row>
               {
-                total > 10 ?
-                  <Row>
-                    <Col>
-                      <Pagination
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        activePage={parseInt(page)}
-                        itemsCountPerPage={limit}
-                        totalItemsCount={total}
-                        pageRangeDisplayed={3}
-                        onChange={handlePageChange}
-                      />
-                    </Col>
-                  </Row>
-                  :
-                  null
+                total > 10 &&
+                <Row>
+                  <Col>
+                    <Pagination
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activePage={parseInt(page)}
+                      itemsCountPerPage={limit}
+                      totalItemsCount={total}
+                      pageRangeDisplayed={3}
+                      onChange={handlePageChange}
+                    />
+                  </Col>
+                </Row>
               }
             </>
 
             :
             <h3>Sin resultados en tu busqueda</h3>
         }
-        <CrearRegistro
-          show={nuevoRegistro}
-          onHide={() => setNuevoRegistro(false)}
-          actualizarLista={actualizarLista}
-          paginaActual={page}
+        {
+          nuevoRegistro &&
+          <CrearRegistro
+            show={nuevoRegistro}
+            onHide={() => setNuevoRegistro(false)}
+            actualizarlista={actualizarLista}
+            paginaactual={page}
 
-        />
+          />
+        }
         <ModalMensaje
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -141,32 +142,33 @@ const ProveedoresData = (props) => {
               </Col>
             </Row>
             {
-              total > 10 ?
-                <Row>
-                  <Col>
-                    <Pagination
-                      itemClass="page-item"
-                      linkClass="page-link"
-                      activePage={parseInt(page)}
-                      itemsCountPerPage={limit}
-                      totalItemsCount={total}
-                      pageRangeDisplayed={3}
-                      onChange={handlePageChange}
-                    />
-                  </Col>
-                </Row>
-                :
-                null
+              total > 10 &&
+              <Row>
+                <Col>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Col>
+              </Row>
             }
           </>
       }
-      <CrearRegistro
-        show={nuevoRegistro}
-        onHide={() => setNuevoRegistro(false)}
-        actualizarLista={actualizarLista}
-        paginaActual={page}
+      {
+        nuevoRegistro &&
+        <CrearRegistro
+          show={nuevoRegistro}
+          onHide={() => setNuevoRegistro(false)}
+          actualizarlista={actualizarLista}
+          paginaactual={page}
 
-      />
+        />
+      }
       <ModalMensaje
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -176,31 +178,28 @@ const ProveedoresData = (props) => {
 }
 
 function CrearRegistro(props) {
-  const { actualizarLista, paginaActual } = props
+  const { actualizarlista, paginaactual, ...restoprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm()
 
   const onSubmit = values => {
     setLoading(true)
-    setTimeout(() => {
-      crearProveedorApi(values)
-        .then(respuesta => {
-          setLoading(false)
-          setMessagePut(respuesta.message)
-          if (respuesta.ok) {
-            actualizarLista(paginaActual)
-          }
-        })
-    }, 1000);
+    crearProveedorApi(values)
+      .then(respuesta => {
+        setLoading(false)
+        setMessagePut(respuesta.message)
+        if (respuesta.ok) {
+          actualizarlista(paginaactual)
+        }
+      })
   }
   return (
     <Modal
-      {...props}
+      {...restoprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-
       onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>
@@ -392,12 +391,10 @@ function CrearRegistro(props) {
       </Modal.Body>
       <Modal.Footer >
         {
-          messagePut ?
-            <>
-              <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
-            </>
-            :
-            null
+          messagePut &&
+          <>
+            <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
+          </>
         }
         <Button onClick={props.onHide} variant="outline-warning">Cancelar / Salir</Button>
       </Modal.Footer>

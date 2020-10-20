@@ -60,88 +60,60 @@ const DetalleListaProveedoresDataProveedores = (props) => {
         <tbody>
           {
             docs.map((y, z) =>
-              <tr key={z} className={y.activo ? "" : "text-danger"}>
-                {
-                  y.activo ?
-                    <td>Sí</td>
-                    :
-                    <td>No</td>
-                }
-                <td>{y.nombre}</td>
-                <td>{y.celular}</td>
-                <td>
+              <tr
+                key={z}
+                className="cursor-pointer "
+              >
+                <td onClick={() => verRegistro(y)}>{y.nombre}</td>
+                <td onClick={() => verRegistro(y)}>{y.celular}</td>
+                <td onClick={() => editarRegistro(y)}>
                   <Pencil
                     width="1.5em"
                     size="1.5em"
-                    onClick={() => editarRegistro(y)}
                   />
                 </td>
-                <td>
-                  {
-                    y.activo ?
-                      <OverlayTrigger
-                        key={'top'}
-                        overlay={
-                          <Tooltip >
-                            Desactivar
-                            </Tooltip>
-                        }
-                      >
-                        < ClipboardCheck
-                          width="1.5em"
-                          size="1.5em"
-                          onClick={() => activarDesactivar(y._id, y.activo)}
-                        />
-                      </OverlayTrigger>
-                      :
-                      <OverlayTrigger
-                        key={'top'}
-                        overlay={
-                          <Tooltip >
-                            Activar
-                            </Tooltip>
-                        }
-                      >
-                        <ClipboardX
-                          width="1.5em"
-                          size="1.5em"
-                          onClick={() => activarDesactivar(y._id, y.activo)}
-                        />
-                      </OverlayTrigger>
-                  }
-                </td>
-                <td><Eye
-                  width="1.5em"
-                  size="1.5em"
-                  onClick={() => verRegistro(y)}
-                />
+                <td
+                  onClick={() => activarDesactivar(y._id, y.activo)}
+                >
+                  <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label=""
+                    onChange={() => { }}
+                    checked={y.activo}
+                    name="activo"
+                  />
                 </td>
               </tr>
             )
           }
         </tbody>
       </Table>
-      <ModalMensajes
-        show={modalShow.ver}
-        txt={modalShow.txt}
-        onHide={() => setModalShow({ ver: false, txt: "" })}
-      />
-      <VerRegisto
-        show={modalShow2.ver}
-        onHide={() => setModalShow2({ ver: false, datos: "" })}
-        data={modalShow2.datos}
-      />
       {
-        modalShow3.ver ?
-          <EditarRegistro
-            show={modalShow3.ver}
-            informacion={modalShow3.informacion}
-            actualizarLista={actualizarLista}
-            onHide={() => setModalShow3({ ver: false, informacion: "" })}
-            paginaActual={paginaActual}
-          />
-          :
-          null
+        modalShow.ver &&
+        <ModalMensajes
+          show={modalShow.ver}
+          txt={modalShow.txt}
+          onHide={() => setModalShow({ ver: false, txt: "" })}
+        />
+      }
+      {
+        modalShow2.ver &&
+        <VerRegisto
+          show={modalShow2.ver}
+          onHide={() => setModalShow2({ ver: false, datos: "" })}
+          data={modalShow2.datos}
+        />
+      }
+      {
+        modalShow3.ver &&
+        <EditarRegistro
+          show={modalShow3.ver}
+          informacion={modalShow3.informacion}
+          actualizarlista={actualizarLista}
+          onHide={() => setModalShow3({ ver: false, informacion: "" })}
+          paginaactual={paginaActual}
+        />
       }
     </div>
   )
@@ -167,6 +139,9 @@ function ModalMensajes(props) {
 }
 function VerRegisto(props) {
   const { data } = props
+  if (!data) {
+    return (null)
+  }
   return (
     <Modal
       {...props}
@@ -174,7 +149,7 @@ function VerRegisto(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className={data.activo ? "bg-success text-white" : "bg-danger text-white"} >
         <Modal.Title id="contained-modal-title-vcenter">
           {data.nombre} {data.rut}
         </Modal.Title>
@@ -182,7 +157,7 @@ function VerRegisto(props) {
       <Modal.Body>
         <Row>
           <Col>
-            <strong>Estado: </strong> {data.activo ? "Activo" : "Inactivo"}
+            <strong>Estado: </strong>
           </Col>
           <Col>
             <strong>Dirección: </strong> {data.direccion}
@@ -223,7 +198,7 @@ function VerRegisto(props) {
   );
 }
 function EditarRegistro(props) {
-  const { informacion, actualizarLista, paginaActual } = props
+  const { informacion, actualizarlista, paginaactual, ...otrasprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm({
@@ -248,14 +223,14 @@ function EditarRegistro(props) {
           setLoading(false)
           setMessagePut(respuesta.message)
           if (respuesta.ok) {
-            actualizarLista(paginaActual)
+            actualizarlista(paginaactual)
           }
         })
     }, 1000);
   }
   return (
     <Modal
-      {...props}
+      {...otrasprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -266,7 +241,14 @@ function EditarRegistro(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+        >
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Nombre</Form.Label>
@@ -449,12 +431,10 @@ function EditarRegistro(props) {
       </Modal.Body>
       <Modal.Footer >
         {
-          messagePut ?
-            <>
-              <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
-            </>
-            :
-            null
+          messagePut &&
+          <>
+            <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
+          </>
         }
         <Button onClick={props.onHide}>Cancelar / Salir</Button>
       </Modal.Footer>

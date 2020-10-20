@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
-import { Table, OverlayTrigger, Tooltip, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
-import { Pencil, ClipboardCheck, ClipboardX, Eye } from 'react-bootstrap-icons'
+import { Table, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
+import { Pencil } from 'react-bootstrap-icons'
 import { useForm } from 'react-hook-form'
 import { ContextSucursales } from '../../../../../context/contextSucursales'
 import { putActDesSucursalApi, getListaSucursalesApi, editarSucursalesApi } from '../../../../../api/sucursales'
@@ -62,37 +62,25 @@ const DetalleListaSucursales = (props) => {
         <tbody>
           {
             docs.map((y, z) =>
-              <tr key={z} className={y.activo ? "" : "text-danger"}>
-                <td>{y.nombre}</td>
-                <td>{y.direccion}</td>
-                <td>
+              <tr key={z} className="cursor-pointer ">
+                <td onClick={() => verRegistro(y)}>{y.nombre}</td>
+                <td onClick={() => verRegistro(y)}>{y.direccion}</td>
+                <td onClick={() => editarRegistro(y)}>
                   <Pencil
                     width="1.5em"
                     size="1.5em"
-                    onClick={() => editarRegistro(y)}
                   />
                 </td>
-                <td>
-                  {
-                    y.activo ?
-                      < ClipboardCheck
-                        width="1.5em"
-                        size="1.5em"
-                        onClick={() => activarDesactivar(y._id, y.activo)}
-                      />
-                      :
-                      <ClipboardX
-                        width="1.5em"
-                        size="1.5em"
-                        onClick={() => activarDesactivar(y._id, y.activo)}
-                      />
-                  }
-                </td>
-                <td>
-                  <Eye
-                    width="1.5em"
-                    size="1.5em"
-                    onClick={() => verRegistro(y)}
+                <td
+                  onClick={() => activarDesactivar(y._id, y.activo)}
+                >
+                  <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label=""
+                    onChange={() => { }}
+                    checked={y.activo}
+                    name="activo"
                   />
                 </td>
               </tr>
@@ -100,16 +88,22 @@ const DetalleListaSucursales = (props) => {
           }
         </tbody>
       </Table>
-      <ModalMensajes
-        show={modalShow.ver}
-        txt={modalShow.txt}
-        onHide={() => setModalShow({ ver: false, txt: "" })}
-      />
-      <VerRegisto
-        show={modalShow2.ver}
-        onHide={() => setModalShow2({ ver: false, datos: "" })}
-        data={modalShow2.datos}
-      />
+      {
+        modalShow.ver &&
+        <ModalMensajes
+          show={modalShow.ver}
+          txt={modalShow.txt}
+          onHide={() => setModalShow({ ver: false, txt: "" })}
+        />
+      }
+      {
+        modalShow2.ver &&
+        <VerRegisto
+          show={modalShow2.ver}
+          onHide={() => setModalShow2({ ver: false, datos: "" })}
+          data={modalShow2.datos}
+        />
+      }
       {
         modalShow3.ver ?
           <EditarRegistro
@@ -153,9 +147,9 @@ function VerRegisto(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className={data.activo ? "bg-success text-white" : "bg-danger text-white"} >
         <Modal.Title id="contained-modal-title-vcenter">
-          {data.nombre} {data.activo ? " -> Activo" : " -> Inactivo"}
+          {data.nombre}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -175,7 +169,7 @@ function VerRegisto(props) {
   )
 }
 function EditarRegistro(props) {
-  const { informacion, actualizarLista, paginaActual } = props
+  const { informacion, actualizarLista, paginaActual, ...otrasprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm({
@@ -188,20 +182,18 @@ function EditarRegistro(props) {
 
   const onSubmit = values => {
     setLoading(true)
-    setTimeout(() => {
-      editarSucursalesApi(informacion._id, values)
-        .then(respuesta => {
-          setLoading(false)
-          setMessagePut(respuesta.message)
-          if (respuesta.ok) {
-            actualizarLista(paginaActual)
-          }
-        })
-    }, 1000);
+    editarSucursalesApi(informacion._id, values)
+      .then(respuesta => {
+        setLoading(false)
+        setMessagePut(respuesta.message)
+        if (respuesta.ok) {
+          actualizarLista(paginaActual)
+        }
+      })
   }
   return (
     <Modal
-      {...props}
+      {...otrasprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

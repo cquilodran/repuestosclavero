@@ -7,11 +7,15 @@ import { logout } from '../../../api/auth'
 
 
 const HeaderPanelAdministrador = () => {
-  const { usuario: { sucursal_nombre } } = useContext(ContextUserContext)
+  const { usuario: { sucursal_nombre, perfil_nombre } } = useContext(ContextUserContext)
+  const salir = () => {
+    logout()
+    window.location.href = "/sesion"
+  }
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-warning text-dark">
       <Navbar.Brand href="#home">
-        Repuestos Clavero Chile | {sucursal_nombre}
+        Sucursal <strong>{sucursal_nombre}</strong> {perfil_nombre}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -49,17 +53,11 @@ const HeaderPanelAdministrador = () => {
           </LinkContainer>
         </Nav>
         <Nav>
-          <LinkContainer to='/'>
-            <NavItem className='nav-link' eventkey={7} onClick={logout}>
-              Panel general
-            </NavItem>
-          </LinkContainer>
-          <Nav.Link href="#deets" onClick={logout}>
+          {/* <LinkContainer to='/'> */}
+          <NavItem className='nav-link' eventkey={7} onClick={salir}>
             Salir
-          </Nav.Link>
-          <Nav.Link eventKey={2} href="#memes">
-            Dank memes
-          </Nav.Link>
+            </NavItem>
+          {/* </LinkContainer> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

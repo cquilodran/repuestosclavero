@@ -17,6 +17,7 @@ const ProviderUser = ({ children }) => {
     sucursal_id: null,
     sucursal_activo: null,
     sucursal_nombre: null,
+    cargado: true
   })
 
 

@@ -67,7 +67,7 @@ const UsuariosData = (props) => {
             <>
               <Row>
                 <Col>
-                  <ListaUsuarios paginaActual={page} />
+                  <ListaUsuarios paginaactual={page} />
                 </Col>
               </Row>
               {
@@ -95,8 +95,8 @@ const UsuariosData = (props) => {
         <CrearRegistro
           show={nuevoRegistro}
           onHide={() => setNuevoRegistro(false)}
-          actualizarLista={actualizarLista}
-          paginaActual={page}
+          actualizarlista={actualizarLista}
+          paginaactual={page}
 
         />
         <ModalMensaje
@@ -137,7 +137,7 @@ const UsuariosData = (props) => {
             <hr />
             <Row>
               <Col>
-                <ListaUsuarios paginaActual={page} />
+                <ListaUsuarios paginaactual={page} />
               </Col>
             </Row>
             {
@@ -163,8 +163,8 @@ const UsuariosData = (props) => {
       <CrearRegistro
         show={nuevoRegistro}
         onHide={() => setNuevoRegistro(false)}
-        actualizarLista={actualizarLista}
-        paginaActual={page}
+        actualizarlista={actualizarLista}
+        paginaactual={page}
       />
       <ModalMensaje
         show={modalShow}
@@ -174,7 +174,7 @@ const UsuariosData = (props) => {
   )
 }
 function CrearRegistro(props) {
-  const { actualizarLista, paginaActual } = props
+  const { actualizarlista, paginaactual, ...restoprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const [listaPerfiles, setListaPerfiles] = useState([])
@@ -185,29 +185,39 @@ function CrearRegistro(props) {
     if (values.password !== values.rpassword) {
       alert("Contraseñas deben ser iguales")
     } else {
-      setLoading(true)
-      // delete values.repassword
-      postCrearUsuariosApi(values)
-        .then(respuesta => {
-          setLoading(false)
-          setMessagePut(respuesta.message)
-          if (respuesta.ok) {
-            actualizarLista(paginaActual)
-          }
-        })
+      if (values.password === "") {
+        delete values.password
+        setLoading(true)
+        postCrearUsuariosApi(values)
+          .then(respuesta => {
+            setLoading(false)
+            setMessagePut(respuesta.message)
+            if (respuesta.ok) {
+              actualizarlista(paginaactual)
+            }
+          })
+      } else {
+        setLoading(true)
+        postCrearUsuariosApi(values)
+          .then(respuesta => {
+            setLoading(false)
+            setMessagePut(respuesta.message)
+            if (respuesta.ok) {
+              actualizarlista(paginaactual)
+            }
+          })
+      }
     }
   }
   useEffect(() => {
-    setTimeout(() => {
-      getListaPerfilesApi(1, 1000)
-        .then(lista => {
-          if (lista.ok === false) {
-            alert("No fue posible recuperar la lista de perfiles")
-          } else {
-            setListaPerfiles(lista.lista.docs)
-          }
-        })
-    }, 1000);
+    getListaPerfilesApi(1, 1000)
+      .then(lista => {
+        if (lista.ok === false) {
+          alert("No fue posible recuperar la lista de perfiles")
+        } else {
+          setListaPerfiles(lista.lista.docs)
+        }
+      })
     getListaSucursalesApi(1, 1000)
       .then(lista => {
         if (lista.ok === false) {
@@ -219,10 +229,11 @@ function CrearRegistro(props) {
   }, [])
   return (
     <Modal
-      {...props}
+      {...restoprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">

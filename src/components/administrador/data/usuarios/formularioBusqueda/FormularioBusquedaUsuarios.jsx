@@ -50,7 +50,6 @@ const FormularioBusquedaSucursales = (props) => {
     }
     buscaUsuarioApi(values, paginaActual)
       .then(lista => {
-        console.log(lista);
         if (lista.ok === false) {
           setModalShow(true)
         } else {

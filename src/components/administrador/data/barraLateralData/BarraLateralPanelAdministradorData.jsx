@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Nav, NavItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { ContextUserContext } from '../../../../context/user/ContextUser'
 
 import './BarraLateralPanelAdministradorData.scss'
 
@@ -9,7 +10,7 @@ const menu = [
   { nombre: "Usuarios", link: "/panel-administrador/data/usuarios" },
   { nombre: "Proveedores", link: "/panel-administrador/data/proveedores" },
   { nombre: "Documentos", link: "/panel-administrador/data/documentos" },
-  { nombre: "Producto", link: "/panel-administrador/data/productos" },
+  { nombre: "Productos", link: "/panel-administrador/data/productos" },
   { nombre: "Categorias", link: "/panel-administrador/data/categorias" },
   { nombre: "Unidades", link: "/panel-administrador/data/unidades" },
   { nombre: "Lado vehículo", link: "/panel-administrador/data/lado-vehiculo" },
@@ -19,10 +20,13 @@ const menu = [
 
 ]
 const BarraLateralPanelAdministradorData = ({ activo }) => {
+  const { usuario: { user_nombre } } = useContext(ContextUserContext)
+
   return (
     <div className='BarraLateralPanelAdministradorData'>
 
       <Nav className='flex-column' >
+        <h5 className="font-italic font-weight-bold">{user_nombre}</h5>
         {
           menu.map((x, i) =>
             <div key={i}>

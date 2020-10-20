@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Table, OverlayTrigger, Tooltip, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
-import { Pencil, ClipboardCheck, ClipboardX, Eye } from 'react-bootstrap-icons'
+import { Table, Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap'
+import { Pencil } from 'react-bootstrap-icons'
 import { useForm } from 'react-hook-form'
 import { ContextUsuarios } from '../../../../../context/contextUsuarios'
 import { putActDesUsuarioApi, editarUsuarioApi, getListaUsuariosApi } from '../../../../../api/usuarios'
@@ -63,38 +63,26 @@ const DetalleListaUsuarios = (props) => {
         <tbody>
           {
             docs.map((y, z) =>
-              <tr key={z} className={y.activo ? "" : "text-danger"}>
-                <td>{y.nombre}</td>
-                <td>{y.sucursal.nombre}</td>
-                <td>{y.perfil.nombre}</td>
-                <td>
+              <tr key={z} className="cursor-pointer ">
+                <td onClick={() => verRegistro(y)}>{y.nombre}</td>
+                <td onClick={() => verRegistro(y)}>{y.sucursal.nombre}</td>
+                <td onClick={() => verRegistro(y)}>{y.perfil.nombre}</td>
+                <td onClick={() => editarRegistro(y)}>
                   <Pencil
                     width="1.5em"
                     size="1.5em"
-                    onClick={() => editarRegistro(y)}
                   />
                 </td>
-                <td>
-                  {
-                    y.activo ?
-                      < ClipboardCheck
-                        width="1.5em"
-                        size="1.5em"
-                        onClick={() => activarDesactivar(y._id, y.activo)}
-                      />
-                      :
-                      <ClipboardX
-                        width="1.5em"
-                        size="1.5em"
-                        onClick={() => activarDesactivar(y._id, y.activo)}
-                      />
-                  }
-                </td>
-                <td>
-                  <Eye
-                    width="1.5em"
-                    size="1.5em"
-                    onClick={() => verRegistro(y)}
+                <td
+                  onClick={() => activarDesactivar(y._id, y.activo)}
+                >
+                  <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label=""
+                    onChange={() => { }}
+                    checked={y.activo}
+                    name="activo"
                   />
                 </td>
               </tr>
@@ -102,32 +90,31 @@ const DetalleListaUsuarios = (props) => {
           }
         </tbody>
       </Table>
-      <ModalMensajes
-        show={modalShow.ver}
-        txt={modalShow.txt}
-        onHide={() => setModalShow({ ver: false, txt: "" })}
-      />
       {
-        modalShow2.ver ?
-          <VerRegisto
-            show={modalShow2.ver}
-            onHide={() => setModalShow2({ ver: false, datos: "" })}
-            data={modalShow2.datos}
-          />
-          :
-          null
+        modalShow.ver &&
+        <ModalMensajes
+          show={modalShow.ver}
+          txt={modalShow.txt}
+          onHide={() => setModalShow({ ver: false, txt: "" })}
+        />
       }
       {
-        modalShow3.ver ?
-          <EditarRegistro
-            show={modalShow3.ver}
-            informacion={modalShow3.informacion}
-            actualizarLista={actualizarLista}
-            onHide={() => setModalShow3({ ver: false, informacion: "" })}
-            paginaActual={paginaActual}
-          />
-          :
-          null
+        modalShow2.ver &&
+        <VerRegisto
+          show={modalShow2.ver}
+          onHide={() => setModalShow2({ ver: false, datos: "" })}
+          data={modalShow2.datos}
+        />
+      }
+      {
+        modalShow3.ver &&
+        <EditarRegistro
+          show={modalShow3.ver}
+          informacion={modalShow3.informacion}
+          actualizarlista={actualizarLista}
+          onHide={() => setModalShow3({ ver: false, informacion: "" })}
+          paginaactual={paginaActual}
+        />
       }
     </div>
   )
@@ -162,33 +149,51 @@ function VerRegisto(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className={data.activo ? "bg-success text-white" : "bg-danger text-white"}>
         <Modal.Title id="contained-modal-title-vcenter">
-          {data.nombre} {data.activo ? " -> Activo" : " -> Inactivo"}
+          {data.nombre}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
           <Col>
-            <strong>Nombre: </strong> {data.nombre}
+            <strong>Nombre: </strong>
+            <p className="text-break">
+              {data.nombre}
+            </p>
           </Col>
           <Col>
-            <strong>Apellido: </strong> {data.apellido}
+            <strong>Apellido: </strong>
+            <p className="text-break">
+              {data.apellido}
+            </p>
           </Col>
           <Col>
-            <strong>Perfil: </strong> {perfil}
+            <strong>Perfil: </strong>
+            <p className="text-break">
+              {perfil}
+            </p>
           </Col>
         </Row>
         <hr />
         <Row>
           <Col>
-            <strong>Celular: </strong> {data.celular}
+            <strong>Celular: </strong>
+            <p className="text-break">
+              {data.celular}
+            </p>
           </Col>
           <Col>
-            <strong>Email: </strong> {data.email}
+            <strong>Email: </strong>
+            <p className="text-break">
+              {data.email}
+            </p>
           </Col>
           <Col>
-            <strong>Sucursal: </strong> {sucursal}
+            <strong>Sucursal: </strong>
+            <p className="text-break">
+              {sucursal}
+            </p>
           </Col>
         </Row>
       </Modal.Body>
@@ -199,7 +204,7 @@ function VerRegisto(props) {
   )
 }
 function EditarRegistro(props) {
-  const { informacion, actualizarLista, paginaActual } = props
+  const { informacion, actualizarlista, paginaactual, ...otrasprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const [listaPerfiles, setListaPerfiles] = useState([])
@@ -245,14 +250,14 @@ function EditarRegistro(props) {
           setLoading(false)
           setMessagePut(respuesta.message)
           if (respuesta.ok) {
-            actualizarLista(paginaActual)
+            actualizarlista(paginaactual)
           }
         })
     }
   }
   return (
     <Modal
-      {...props}
+      {...otrasprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
