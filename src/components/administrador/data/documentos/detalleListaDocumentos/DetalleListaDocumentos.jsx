@@ -11,7 +11,6 @@ const DetalleListaDocumentos = (props) => {
   const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" })
-
   function actualizarLista() {
     getListaDocumentosApi(paginaActual)
       .then(lista => {
@@ -157,7 +156,7 @@ function VerRegisto(props) {
       <Modal.Body>
         <Row>
           <Col>
-            <strong>Documeto: </strong> {data.nombre}
+            <strong>Documento: </strong> {data.nombre}
           </Col>
           <Col>
             <strong>Notas: </strong> {data.notas}
