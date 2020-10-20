@@ -68,34 +68,35 @@ const MarcaVehiculo = (props) => {
                 </Col>
               </Row>
               {
-                total > 10 ?
-                  <Row>
-                    <Col>
-                      <Pagination
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        activePage={parseInt(page)}
-                        itemsCountPerPage={limit}
-                        totalItemsCount={total}
-                        pageRangeDisplayed={3}
-                        onChange={handlePageChange}
-                      />
-                    </Col>
-                  </Row>
-                  :
-                  null
+                total > 10 &&
+                <Row>
+                  <Col>
+                    <Pagination
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activePage={parseInt(page)}
+                      itemsCountPerPage={limit}
+                      totalItemsCount={total}
+                      pageRangeDisplayed={3}
+                      onChange={handlePageChange}
+                    />
+                  </Col>
+                </Row>
               }
             </>
             :
             <h3>Sin resultados en tu busqueda</h3>
         }
-        <CrearRegistro
-          show={nuevoRegistro}
-          onHide={() => setNuevoRegistro(false)}
-          actualizarLista={actualizarLista}
-          paginaActual={page}
+        {
+          nuevoRegistro &&
+          <CrearRegistro
+            show={nuevoRegistro}
+            onHide={() => setNuevoRegistro(false)}
+            actualizarlista={actualizarLista}
+            paginaactual={page}
 
-        />
+          />
+        }
         <ModalMensaje
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -138,31 +139,32 @@ const MarcaVehiculo = (props) => {
               </Col>
             </Row>
             {
-              total > 10 ?
-                <Row>
-                  <Col>
-                    <Pagination
-                      itemClass="page-item"
-                      linkClass="page-link"
-                      activePage={parseInt(page)}
-                      itemsCountPerPage={limit}
-                      totalItemsCount={total}
-                      pageRangeDisplayed={3}
-                      onChange={handlePageChange}
-                    />
-                  </Col>
-                </Row>
-                :
-                null
+              total > 10 &&
+              <Row>
+                <Col>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Col>
+              </Row>
             }
           </>
       }
-      <CrearRegistro
-        show={nuevoRegistro}
-        onHide={() => setNuevoRegistro(false)}
-        actualizarLista={actualizarLista}
-        paginaActual={page}
-      />
+      {
+        nuevoRegistro &&
+        <CrearRegistro
+          show={nuevoRegistro}
+          onHide={() => setNuevoRegistro(false)}
+          actualizarlista={actualizarLista}
+          paginaactual={page}
+        />
+      }
       <ModalMensaje
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -171,7 +173,7 @@ const MarcaVehiculo = (props) => {
   )
 }
 function CrearRegistro(props) {
-  const { actualizarLista, paginaActual } = props
+  const { actualizarlista, paginaactual, ...restoprops } = props
   const [loading, setLoading] = useState(false)
   const [messagePut, setMessagePut] = useState(false)
   const { register, errors, handleSubmit } = useForm()
@@ -183,17 +185,16 @@ function CrearRegistro(props) {
         setLoading(false)
         setMessagePut(respuesta.message)
         if (respuesta.ok) {
-          actualizarLista(paginaActual)
+          actualizarlista(paginaactual)
         }
       })
   }
   return (
     <Modal
-      {...props}
+      {...restoprops}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-
       onExit={() => setMessagePut(false)}
     >
       <Modal.Header closeButton>
@@ -202,7 +203,14 @@ function CrearRegistro(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+        >
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Nombre</Form.Label>
@@ -260,12 +268,10 @@ function CrearRegistro(props) {
       </Modal.Body>
       <Modal.Footer >
         {
-          messagePut ?
-            <>
-              <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
-            </>
-            :
-            null
+          messagePut &&
+          <>
+            <Spinner animation="grow" variant="danger" /> <h3>{messagePut}</h3>
+          </>
         }
         <Button onClick={props.onHide} variant="outline-warning">Cancelar / Salir</Button>
       </Modal.Footer>
@@ -291,4 +297,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default withRouter(MarcaVehiculo) 
+export default React.memo(withRouter(MarcaVehiculo))
