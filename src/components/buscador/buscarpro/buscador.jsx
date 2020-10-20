@@ -108,6 +108,7 @@ const Buscador = () => {
 
         }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [resultado])
     useEffect(() => {
         if (vistopro) {
@@ -225,7 +226,7 @@ const Buscador = () => {
                     <p>Es muy posible que lo tengamos en nuestro local, ¿deseas contactarnos de forma inmediata vía whatsapp?</p>
                     <hr />
                     <div className="tarjetaproducto__btnmodal">
-                        <a target='blank' href='https://wa.me/56966678588?text=Me%20gustaría%20cotizar%20'>
+                        <a target='blank' href='https://wa.me/56982044499?text=Me%20gustaría%20cotizar%20'>
                             <FaWhatsapp size="4em" color="white" onClick={() => eventface()} />
                         </a>
                         <FcCancel size="4em" onClick={() => setModalIsOpen(false)} />
@@ -235,10 +236,10 @@ const Buscador = () => {
         )
     }
     return (
-        <>
+        <div className='buscador__cargando-form'>
             <h3>Cargando nuestro formulario de busqueda...</h3>
             <Espera />
-        </>
+        </div>
     )
 
 }

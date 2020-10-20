@@ -49,16 +49,19 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-      padding: 0.5% 0;
-      svg {
-        height: 100%;
-        font-size: 5em;
-        margin: 0 15%;
-        color: white;
+      a {
+        svg {
+          height: 100%;
+          font-size: 4em;
+          color: white;
+        }
+        .email {
+          margin-left: 15px;
+        }
       }
-      img {
-        height: 100%;
-        margin: 0 15%;
+
+      .fono {
+        display: none;
       }
     }
     &__icono {
@@ -87,10 +90,12 @@
         transition: 1s ease-out;
         margin-top: auto;
         color: white;
+        width: 33%;
       }
       &__logo {
         height: 100%;
-        padding: 2% 0 !important;
+        padding: 1%;
+        width: 33%;
         img {
           height: 100%;
         }
@@ -111,16 +116,27 @@
       }
       &__rrss {
         display: flex;
-        justify-content: space-around;
-        align-items: top;
-        padding: 2% 0;
-        svg {
-          font-size: 6em;
-          // color: red;
+        justify-content: space-between;
+        // align-items: center;
+        // padding: 2% 0;
+        width: 33%;
+        a {
+          svg {
+            height: 100%;
+            font-size: 3em;
+          }
+          .fono {
+            display: block;
+            margin-left: 10px;
+          }
+          .wsp {
+            margin: 0;
+            padding: 0 !important;
+          }
         }
-        img {
-          height: 100%;
-          margin: 0 12%;
+
+        .email {
+          display: none;
         }
       }
     }

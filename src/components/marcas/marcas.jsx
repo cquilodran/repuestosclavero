@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { ProductosContext } from '../../context/productos'
+import React from 'react'
 
 import Tituloseccion from '../tituloseccion/index'
 
@@ -11,15 +10,7 @@ import beste from '../../assets/logo-beste.svg'
 
 
 const Marcas = () => {
-    const { pedirproductospaginados, cargandopaginados } = useContext(ProductosContext)
-    const [contador, setContador] = useState(1)
 
-    useEffect(() => {
-        if (cargandopaginados !== false) {
-            pedirproductospaginados(100, contador)
-            setContador(contador + 1)
-        }
-    }, [cargandopaginados])
 
     return (
         <div className="marcas">

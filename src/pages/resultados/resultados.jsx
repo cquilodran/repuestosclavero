@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import { ProductosContext } from '../../context/productos'
 import { BsHouse } from "react-icons/bs";
-import { AiOutlineShop } from "react-icons/ai";
 
 import './resultados.scss'
 import TarjetaProducto from '../../components/tarjetaproducto'
@@ -20,9 +19,6 @@ const Resultados = () => {
           <h3>Lo siento, no usaste los filtros</h3>
           <Link to='/' className="menu-item">
             <BsHouse size='2.5em' color="black" className="icono-resultados" />
-          </Link>
-          <Link to='/tienda' className="menu-item">
-            <AiOutlineShop size='2.5em' color="black" className="icono-resultados" />
           </Link>
         </div>
       </>
