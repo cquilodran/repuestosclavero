@@ -964,4 +964,4 @@ function UploadImagen(props) {
     </div>
   )
 }
-export default DetalleListaProductos
+export default React.memo(DetalleListaProductos)

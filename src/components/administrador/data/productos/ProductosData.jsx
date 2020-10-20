@@ -771,4 +771,4 @@ function ModalMensaje(props) {
     </Modal>
   );
 }
-export default withRouter(ProductosData) 
+export default React.memo(withRouter(ProductosData))  
