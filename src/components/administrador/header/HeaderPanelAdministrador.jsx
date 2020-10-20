@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { ContextUserContext } from '../../../context/user/ContextUser'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
-import { } from 'react-bootstrap-icons'
 import { LinkContainer } from 'react-router-bootstrap'
 import { logout } from '../../../api/auth'
 
@@ -15,7 +14,7 @@ const HeaderPanelAdministrador = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-warning text-dark">
       <Navbar.Brand href="#home">
-        Sucursal <strong>{sucursal_nombre}</strong> {perfil_nombre}
+        Sucursal <strong>{sucursal_nombre}</strong> / {perfil_nombre}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">

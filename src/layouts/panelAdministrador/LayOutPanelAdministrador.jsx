@@ -13,37 +13,17 @@ import Footer from '../../components/administrador/footer'
 const LayOutPanelAdministrador = (props) => {
   const { usuario } = useContext(ContextUserContext)
   const { routes } = props
-  // if (usuario.cargando) {
-  //   return (
-  //     <Spinner
-  //       as="span"
-  //       animation="grow"
-  //       size="md"
-  //       role="status"
-  //       aria-hidden="true"
-  //     />
-  //   )
-  // }
-  // if (usuario.user_id === false) {
-  //   console.log("Estamos ak");
-  //   return (
-  //     <>
-  //       <Route path="/sesion" component={Sesion} />
-  //       <Redirect to="/sesion" />
-  //     </>
-  //   )
-  // }
+  if (usuario === null) {
+    return (
+      <h1>Cargando....</h1>
+    )
+  }
   return (
     // <div className="body">
     <div className="">
-      {
-        usuario.user_id &&
-        <>
-          <Header />
-          <LoadRoutes routes={routes} />
-          <Footer />
-        </>
-      }
+      <Header />
+      <LoadRoutes routes={routes} />
+      <Footer />
     </div>
   )
 }
@@ -68,4 +48,4 @@ function LoadRoutes(props) {
       }
     </Switch>)
 }
-export default LayOutPanelAdministrador;
+export default React.memo(LayOutPanelAdministrador)

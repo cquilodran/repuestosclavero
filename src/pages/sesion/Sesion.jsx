@@ -22,7 +22,7 @@ const Sesion = () => {
   }
 
   useEffect(() => {
-    if (usuario.user_id) {
+    if (usuario) {
       window.location.href = '/panel-administrador/home'
     }
     return () => {

@@ -6,38 +6,31 @@ const ContextUserContext = React.createContext()
 const { Provider, Consumer } = ContextUserContext
 
 const ProviderUser = ({ children }) => {
-  const [usuario, setUsuario] = useState({
-    user_id: null,
-    user_nombre: null,
-    user_activo: null,
-    perfil_id: null,
-    perfil_activo: null,
-    perfil_valor: null,
-    perfil_nombre: null,
-    sucursal_id: null,
-    sucursal_activo: null,
-    sucursal_nombre: null,
-    cargado: true
-  })
+  const [usuario, setUsuario] = useState(null)
 
-
-  useEffect(() => {
+  async function sesion() {
     const act = getAccessTokenApi()
     if (!act) {
       const rst = getRefreshTokenApi()
       if (!rst) {
         logout()
       } else {
-        refrescarAccessTokenApi(rst)
-          .then(result => {
-            const mtoken = jwtDecode(result.accessToken)
-            setUsuario(mtoken)
-          })
+        const result = await refrescarAccessTokenApi(rst)
+        const mtoken = jwtDecode(result.accessToken)
+        setUsuario(mtoken)
+        // refrescarAccessTokenApi(rst)
+        //   .then(result => {
+        //     const mtoken = jwtDecode(result.accessToken)
+        //     setUsuario(mtoken)
+        //   })
       }
     } else {
       const mtoken = jwtDecode(act)
       setUsuario(mtoken)
     }
+  }
+  useEffect(() => {
+    sesion()
   }, [])
 
   return (
