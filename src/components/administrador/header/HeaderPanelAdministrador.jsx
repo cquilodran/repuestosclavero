@@ -20,7 +20,7 @@ const HeaderPanelAdministrador = () => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
 
-          <LinkContainer to='/user/home'>
+          <LinkContainer to='/panel-administrador/ingresos/proveedor'>
             <NavItem className="nav-link " eventkey={1}>
               Ingresos
             </NavItem>

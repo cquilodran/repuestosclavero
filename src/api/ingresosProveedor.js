@@ -1,10 +1,9 @@
 import { basePath, apiVersion } from './config'
 import { getAccessTokenApi } from './auth'
 
-export async function getListaSucursalesApi(page = 1, limit = 10) {
+export async function getListaIngresoProveedorApi(page = 1, limit = 10, sucursal) {
   const token = getAccessTokenApi()
-
-  const url = `${basePath}/${apiVersion}/lista-sucursal?page=${page}&limit=${limit}`
+  const url = `${basePath}/${apiVersion}/lista-ingreso-proveedor?page=${page}&limit=${limit}&sucursal=${sucursal}`
   const params = {
     method: "GET",
     headers: {
@@ -20,28 +19,9 @@ export async function getListaSucursalesApi(page = 1, limit = 10) {
     return e
   }
 }
-export async function getListaSucursalesActivaApi(page = 1, limit = 10) {
+export async function postIngresoProveedorApi(data) {
   const token = getAccessTokenApi()
-
-  const url = `${basePath}/${apiVersion}/lista-sucursal-activos?page=${page}&limit=${limit}`
-  const params = {
-    method: "GET",
-    headers: {
-      "content-Type": "application/json",
-      Authorization: token
-    }
-  }
-  try {
-    const response = await fetch(url, params)
-    const result = await response.json()
-    return result
-  } catch (e) {
-    return e
-  }
-}
-export async function postCrearSucursalesApi(data) {
-  const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/crear-sucursal`
+  const url = `${basePath}/${apiVersion}/crear-ingreso-proveedor`
   const params = {
     method: "POST",
     body: JSON.stringify(data),
@@ -58,9 +38,9 @@ export async function postCrearSucursalesApi(data) {
     return { ok: "error", e }
   }
 }
-export async function putActDesSucursalApi(id, estado, page = 1) {
+export async function putActDesUnidadesApi(id, estado, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/act-desac-sucursal/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/act-desac-unidad/${id}?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify({ activo: estado }),
@@ -77,9 +57,9 @@ export async function putActDesSucursalApi(id, estado, page = 1) {
     return e
   }
 }
-export async function editarSucursalesApi(id, data, page = 1) {
+export async function editarUnidadesApi(id, data, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/editar-sucursal/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/editar-unidad/${id}?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(data),
@@ -96,9 +76,9 @@ export async function editarSucursalesApi(id, data, page = 1) {
     return { ok: "error", e }
   }
 }
-export async function buscaSucursalApi(values, page = 1) {
+export async function buscaUnidadesApi(values, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/busca-sucursal?page=${page}`
+  const url = `${basePath}/${apiVersion}/buscar-unidad?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(values),
@@ -115,3 +95,23 @@ export async function buscaSucursalApi(values, page = 1) {
     return { ok: false, e }
   }
 }
+
+// export async function getListaUnidadesActivoApi(page = 1, limit = 10) {
+//   const token = getAccessTokenApi()
+
+//   const url = `${basePath}/${apiVersion}/lista-unidad-activo?page=${page}&limit=${limit}`
+//   const params = {
+//     method: "GET",
+//     headers: {
+//       "content-Type": "application/json",
+//       Authorization: token
+//     }
+//   }
+//   try {
+//     const response = await fetch(url, params)
+//     const result = await response.json()
+//     return result
+//   } catch (e) {
+//     return e
+//   }
+// }

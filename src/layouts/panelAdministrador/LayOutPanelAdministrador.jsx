@@ -18,6 +18,7 @@ const LayOutPanelAdministrador = (props) => {
       <h1>Cargando....</h1>
     )
   }
+  console.log(usuario);
   return (
     // <div className="body">
     <div className="">

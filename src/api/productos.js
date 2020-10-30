@@ -1,6 +1,25 @@
 import { basePath, apiVersion } from './config'
 import { getAccessTokenApi } from './auth'
 
+export async function getListaProductoApi2(page = 1, limit = 10) {
+  const token = getAccessTokenApi()
+
+  const url = `${basePath}/${apiVersion}/lista-producto2?page=${page}&limit=${limit}`
+  const params = {
+    method: "GET",
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return e
+  }
+}
 export async function getListaProductoApi(page = 1, limit = 10) {
   const token = getAccessTokenApi()
 
@@ -85,6 +104,25 @@ export async function buscaProductoApi(values, page = 1) {
   const params = {
     method: "PUT",
     body: JSON.stringify(values),
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return { ok: false, e }
+  }
+}
+export async function buscaProductoIngresoApi(values, page = 1) {
+  const token = getAccessTokenApi()
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  const url = `${basePath}/${apiVersion}/lista-producto-busqueda-ingreso?values=${values}`
+  const params = {
+    method: "GET",
     headers: {
       "content-Type": "application/json",
       Authorization: token

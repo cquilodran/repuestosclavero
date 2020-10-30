@@ -34,3 +34,22 @@ body {
     color: rgb(187, 187, 187) !important;
   }
 }
+.BarraLateralPanelAdministrador {
+  .link {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    // border-right: 1px solid black;
+  }
+  .activo {
+    background-color: orange;
+    // box-shadow: 1px 2px 5px rgb(160, 160, 160);
+    justify-content: center;
+    // border-radius: 10px;
+    border-right: 10px solid black;
+    color: white;
+  }
+}
+.modal-xl {
+  min-width: 95vw !important;
+}
