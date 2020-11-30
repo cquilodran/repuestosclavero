@@ -43,4 +43,4 @@ const BarraLateralIngresos = ({ activo }) => {
   )
 }
 
-export default BarraLateralIngresos
+export default React.memo(BarraLateralIngresos)

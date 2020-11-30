@@ -3,16 +3,16 @@ import { Col, OverlayTrigger, Row, Tooltip, Modal, Form, Button, Spinner } from 
 import { useForm } from 'react-hook-form'
 import { PlusCircle } from 'react-bootstrap-icons'
 import { getListaIngresoProveedorApi, postIngresoProveedorApi } from '../../../../api/ingresosProveedor'
-import { getListaSucursalesActivaApi, getListaSucursalesApi } from '../../../../api/sucursales'
+import { getListaSucursalesActivaApi } from '../../../../api/sucursales'
 import { getListaProveedoresActivos } from '../../../../api/proveedor'
-import { getListaProductoApi2, buscaProductoIngresoApi } from '../../../../api/productos'
+import { buscaProductoIngresoApi } from '../../../../api/productos'
 import { ContextIngresoProveedor } from '../../../../context/contextIngresoProveedor'
 import { getListaDocumentosActivosApi } from '../../../../api/documentos'
 import { ContextUserContext } from '../../../../context/user/ContextUser'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
 import Pagination from "react-js-pagination";
-// import ListaUnidades from './listaUnidades'
+import ListaIngresosProveedores from './lista'
 // import FormularioBusquedaUnidades from './formularioBusqueda'
 
 
@@ -41,27 +41,30 @@ const IngresoProveedorIngresos = (props) => {
         if (lista.ok === false) {
           setModalShow(true)
         } else {
-          console.log(lista);
           dispatch({ type: "ACTUALIZA_LISTA_INGRESO_PROVEEDOR", lista })
         }
       })
   }
   useEffect(() => {
-    if (perfil_valor === 1) {
-      getListaSucursalesApi(page, 1000000000)
-        .then(result => {
-          setSucursalA(result.lista.docs)
-        })
-    } else {
-      getListaSucursalesActivaApi(page, 1000000000)
-        .then(result => {
-          setSucursalA(result.lista.docs)
-        })
-    }
-    getListaProductoApi2(page, 1000000000)
+    getListaSucursalesActivaApi(page, 1000000000)
       .then(result => {
-        // console.log("LISTA DE PRODUCTOS DE PRUEBA", result);
+        setSucursalA(result.lista.docs)
       })
+    // if (perfil_valor === 1) {
+    //   getListaSucursalesApi(page, 1000000000)
+    //     .then(result => {
+    //       setSucursalA(result.lista.docs)
+    //     })
+    // } else {
+    //   getListaSucursalesActivaApi(page, 1000000000)
+    //     .then(result => {
+    //       setSucursalA(result.lista.docs)
+    //     })
+    // }
+    // getListaProductoApi2(page, 1000000000)
+    //   .then(result => {
+    //     // console.log("LISTA DE PRODUCTOS DE PRUEBA", result);
+    //   })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [perfil_valor])
   useEffect(() => {
@@ -115,28 +118,22 @@ const IngresoProveedorIngresos = (props) => {
             <>
               <Row>
                 <Col>
-                  {/* <ListaUnidades paginaActual={page} /> */}
-                  Lista ingresos
+                  <ListaIngresosProveedores paginaActual={page} />
                 </Col>
               </Row>
-              {
-                total > 10 ?
-                  <Row>
-                    <Col>
-                      <Pagination
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        activePage={parseInt(page)}
-                        itemsCountPerPage={limit}
-                        totalItemsCount={total}
-                        pageRangeDisplayed={3}
-                        onChange={handlePageChange}
-                      />
-                    </Col>
-                  </Row>
-                  :
-                  null
-              }
+              <Row>
+                <Col>
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activePage={parseInt(page)}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={total}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  />
+                </Col>
+              </Row>
             </>
             :
             <h3>Sin resultados en tu busqueda</h3>
@@ -209,26 +206,26 @@ const IngresoProveedorIngresos = (props) => {
             <hr />
             <Row>
               <Col>
-                {/* <ListaUnidades paginaActual={page} /> */}
-                Lista Ingresos
+                <ListaIngresosProveedores
+                  paginaActual={page}
+                  sucursalactiva={sucursalActiva}
+                />
               </Col>
             </Row>
-            {
-              total > 10 &&
-              <Row>
-                <Col>
-                  <Pagination
-                    itemClass="page-item"
-                    linkClass="page-link"
-                    activePage={parseInt(page)}
-                    itemsCountPerPage={limit}
-                    totalItemsCount={total}
-                    pageRangeDisplayed={3}
-                    onChange={handlePageChange}
-                  />
-                </Col>
-              </Row>
-            }
+            <Row>
+              <Col>
+                <Pagination
+                  itemClass="page-item"
+                  linkClass="page-link"
+                  activePage={parseInt(page)}
+                  itemsCountPerPage={limit}
+                  totalItemsCount={total}
+                  pageRangeDisplayed={3}
+                  onChange={handlePageChange}
+                />
+              </Col>
+            </Row>
+
           </>
       }
       {
@@ -314,6 +311,7 @@ function CrearRegistro(props) {
     }
   }
   const onSubmit = values => {
+    setLoading(true)
     if (perfil !== 1) {
       values.sucursal = sucursal
     }
@@ -322,8 +320,6 @@ function CrearRegistro(props) {
     delete values.precioCosto
     values.detalle = detalle
     values.totalIngreso = totalIngreso
-    console.log(values)
-    setLoading(true)
     postIngresoProveedorApi(values)
       .then(respuesta => {
         setLoading(false)
@@ -332,6 +328,18 @@ function CrearRegistro(props) {
           actualizarlista(paginaactual)
         }
       })
+  }
+  async function buscando(e) {
+    if (e.target.value === undefined || e.target.value === "" || e.target.value === null) {
+      return null
+    } else {
+      try {
+        const busqueda = await buscaProductoIngresoApi(e.target.value)
+        setProductosBusqueda(busqueda.lista.docs)
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
   useEffect(() => {
     getListaProveedoresActivos(1, 1000000000)
@@ -353,18 +361,6 @@ function CrearRegistro(props) {
         }
       })
   }, [])
-  async function buscando(e) {
-    if (e.target.value === undefined || e.target.value === "" || e.target.value === null) {
-      return null
-    } else {
-      try {
-        const busqueda = await buscaProductoIngresoApi(e.target.value)
-        setProductosBusqueda(busqueda.lista.docs)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
   return (
     <Modal
       {...restoprops}
@@ -374,6 +370,7 @@ function CrearRegistro(props) {
       backdrop="static"
       scrollable="true"
       onExit={() => setMessagePut(false)}
+
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -533,6 +530,7 @@ function CrearRegistro(props) {
                 />
               </Form.Group>
             </Form.Row>
+
           </>
           <hr />
           {/* Parte inferior del formulario */}

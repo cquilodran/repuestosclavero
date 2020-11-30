@@ -38,12 +38,12 @@ export async function postIngresoProveedorApi(data) {
     return { ok: "error", e }
   }
 }
-export async function putActDesUnidadesApi(id, estado, page = 1) {
+export async function putActDesIngresoProveedorApi(id, estado, page = 1, sucursal_id) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/act-desac-unidad/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/act-desac-ingreso-proveedor/${id}?page=${page}`
   const params = {
     method: "PUT",
-    body: JSON.stringify({ activo: estado }),
+    body: JSON.stringify({ activo: estado, sucursal: sucursal_id }),
     headers: {
       "content-Type": "application/json",
       Authorization: token
@@ -57,9 +57,9 @@ export async function putActDesUnidadesApi(id, estado, page = 1) {
     return e
   }
 }
-export async function editarUnidadesApi(id, data, page = 1) {
+export async function editarIngresoProveedorApi(id, data, page = 1) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/editar-unidad/${id}?page=${page}`
+  const url = `${basePath}/${apiVersion}/editar-ingreso-proveedor/${id}?page=${page}`
   const params = {
     method: "PUT",
     body: JSON.stringify(data),
@@ -76,12 +76,11 @@ export async function editarUnidadesApi(id, data, page = 1) {
     return { ok: "error", e }
   }
 }
-export async function buscaUnidadesApi(values, page = 1) {
+export async function buscaIngresoProveedorPorNumeroDocumentoApi(values, sucursal) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/buscar-unidad?page=${page}`
+  const url = `${basePath}/${apiVersion}/buscar-ingreso-proveedor?values=${values}&sucursal=${sucursal}`
   const params = {
-    method: "PUT",
-    body: JSON.stringify(values),
+    method: "GET",
     headers: {
       "content-Type": "application/json",
       Authorization: token
@@ -95,23 +94,3 @@ export async function buscaUnidadesApi(values, page = 1) {
     return { ok: false, e }
   }
 }
-
-// export async function getListaUnidadesActivoApi(page = 1, limit = 10) {
-//   const token = getAccessTokenApi()
-
-//   const url = `${basePath}/${apiVersion}/lista-unidad-activo?page=${page}&limit=${limit}`
-//   const params = {
-//     method: "GET",
-//     headers: {
-//       "content-Type": "application/json",
-//       Authorization: token
-//     }
-//   }
-//   try {
-//     const response = await fetch(url, params)
-//     const result = await response.json()
-//     return result
-//   } catch (e) {
-//     return e
-//   }
-// }
