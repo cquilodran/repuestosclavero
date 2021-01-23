@@ -3,7 +3,6 @@ import { Nav, NavItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { ContextUserContext } from '../../../../context/user/ContextUser'
 
-import './BarraLateralPanelAdministradorData.scss'
 
 const menu = [
   { nombre: "Sucursales", link: "/panel-administrador/data/sucursales" },
@@ -23,7 +22,7 @@ const BarraLateralPanelAdministradorData = ({ activo }) => {
   const { usuario: { user_nombre } } = useContext(ContextUserContext)
 
   return (
-    <div className='BarraLateralPanelAdministradorData'>
+    <div className='BarraLateralPanelAdministrador'>
 
       <Nav className='flex-column' >
         <h5 className="font-italic font-weight-bold">{user_nombre}</h5>

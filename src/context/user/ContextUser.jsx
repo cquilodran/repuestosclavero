@@ -17,6 +17,7 @@ const ProviderUser = ({ children }) => {
       } else {
         const result = await refrescarAccessTokenApi(rst)
         const mtoken = jwtDecode(result.accessToken)
+        mtoken.sucursal_id_2 = null
         setUsuario(mtoken)
         // refrescarAccessTokenApi(rst)
         //   .then(result => {
@@ -26,6 +27,7 @@ const ProviderUser = ({ children }) => {
       }
     } else {
       const mtoken = jwtDecode(act)
+      mtoken.sucursal_id_2 = null
       setUsuario(mtoken)
     }
   }

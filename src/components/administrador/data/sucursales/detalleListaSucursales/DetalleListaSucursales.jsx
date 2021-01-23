@@ -16,7 +16,7 @@ const DetalleListaSucursales = (props) => {
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" })
 
-  function actualizarLista() {
+  function actualizarLista(paginaActual) {
     getListaSucursalesApi(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
@@ -81,6 +81,7 @@ const DetalleListaSucursales = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>

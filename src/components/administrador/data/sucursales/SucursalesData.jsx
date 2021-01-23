@@ -64,7 +64,7 @@ const SucursalesData = (props) => {
             <>
               <Row>
                 <Col>
-                  <ListaSucursales paginaactual={page} />
+                  <ListaSucursales paginaActual={page} />
                 </Col>
               </Row>
               {

@@ -20,6 +20,25 @@ export async function getListaDocumentosApi(page = 1, limit = 10) {
     return e
   }
 }
+export async function getListaDocumentosActivosApi(page = 1, limit = 10) {
+  const token = getAccessTokenApi()
+
+  const url = `${basePath}/${apiVersion}/lista-documentos-activos?page=${page}&limit=${limit}`
+  const params = {
+    method: "GET",
+    headers: {
+      "content-Type": "application/json",
+      Authorization: token
+    }
+  }
+  try {
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result
+  } catch (e) {
+    return e
+  }
+}
 export async function postCrearDocumentosApi(data) {
   const token = getAccessTokenApi()
   const url = `${basePath}/${apiVersion}/crear-documento`
