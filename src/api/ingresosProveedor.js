@@ -76,9 +76,10 @@ export async function editarIngresoProveedorApi(id, data, page = 1) {
     return { ok: "error", e }
   }
 }
-export async function buscaIngresoProveedorPorNumeroDocumentoApi(values, sucursal) {
+export async function buscaIngresoProveedorApi(values, sucursal, page) {
   const token = getAccessTokenApi()
-  const url = `${basePath}/${apiVersion}/buscar-ingreso-proveedor?values=${values}&sucursal=${sucursal}`
+  const { nDocumento, proveedor, documento } = values
+  const url = `${basePath}/${apiVersion}/buscar-ingreso-proveedor?nDocumento=${nDocumento}&proveedor=${proveedor}&documento=${documento}&sucursal=${sucursal}&page=${page}`
   const params = {
     method: "GET",
     headers: {

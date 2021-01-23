@@ -3,7 +3,6 @@ import { getAccessTokenApi } from './auth'
 
 export async function getListaSucursalesApi(page = 1, limit = 10) {
   const token = getAccessTokenApi()
-
   const url = `${basePath}/${apiVersion}/lista-sucursal?page=${page}&limit=${limit}`
   const params = {
     method: "GET",

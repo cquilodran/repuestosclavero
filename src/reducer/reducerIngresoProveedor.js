@@ -1,6 +1,4 @@
 export function reducerIngresoProveedor(state, action) {
-  // console.log({ docs, limit, page, pages, total })
-  // const { lista: { docs = [], limit = 10, page = 1, pages = 1, total = 1 } } = action.lista
   const { lista: { docs, limit, page, pages, total } } = action.lista
 
   switch (action.type) {
@@ -13,10 +11,13 @@ export function reducerIngresoProveedor(state, action) {
         pages: pages,
         total: total,
         actualizando: false,
-        busqueda: false
+        busqueda: false,
+        nDocumento: null,
+        proveedor: null,
+        documento: null,
       }
     case "BUSCANDO_INGRESO_PROVEEDOR":
-      // const { lista: { docs, limit, page, pages, total } } = action.lista
+      const { nDocumento, proveedor, documento } = action.lista
       return {
         ...state,
         docs: docs,
@@ -25,7 +26,10 @@ export function reducerIngresoProveedor(state, action) {
         pages: pages,
         total: total,
         actualizando: false,
-        busqueda: true
+        busqueda: true,
+        nDocumento: nDocumento,
+        proveedor: proveedor,
+        documento: documento,
       }
     case "CARGANDO":
       return {

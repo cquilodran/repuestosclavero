@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Col, OverlayTrigger, Row, Tooltip, Modal, Form, Button, Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { getListaIngresoProveedorApi, postIngresoProveedorApi } from '../../../../api/ingresosProveedor'
+import { getListaIngresoProveedorApi, postIngresoProveedorApi, buscaIngresoProveedorApi } from '../../../../api/ingresosProveedor'
 import { getListaSucursalesActivaApi } from '../../../../api/sucursales'
 import { getListaProveedoresActivos } from '../../../../api/proveedor'
 import { buscaProductoIngresoApi } from '../../../../api/productos'
@@ -13,11 +13,13 @@ import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
 import Pagination from "react-js-pagination";
 import ListaIngresosProveedores from './lista'
-// import FormularioBusquedaUnidades from './formularioBusqueda'
+import BusquedaIngresosProveedor from '../busqueda'
 
 
 const IngresoProveedorIngresos = (props) => {
-  const { state: { docs, busqueda, actualizando, limit, total }, dispatch } = useContext(ContextIngresoProveedor)
+  const { state: { docs, actualizando, limit, total, busqueda, nDocumento, proveedor, documento }, dispatch } = useContext(ContextIngresoProveedor)
+  // console.log({ nDocumento, proveedor, documento, busqueda });
+
   const { usuario: { sucursal_nombre, sucursal_id, perfil_valor } } = useContext(ContextUserContext)
   const { location, history } = props
   const { page = 1 } = queryString.parse(location.search)
@@ -35,42 +37,53 @@ const IngresoProveedorIngresos = (props) => {
     const { value } = e.target
     setSucursalActiva(value)
   }
-  function actualizarLista(page) {
-    getListaIngresoProveedorApi(page, 10, sucursalActiva)
-      .then(lista => {
-        if (lista.ok === false) {
-          setModalShow(true)
-        } else {
-          dispatch({ type: "ACTUALIZA_LISTA_INGRESO_PROVEEDOR", lista })
-        }
-      })
+  function actualizarLista(page, busqueda) {
+    if (busqueda) {
+      const values = {
+        nDocumento: nDocumento,
+        proveedor: proveedor,
+        documento: documento
+      }
+      console.log(values);
+      buscaIngresoProveedorApi(values, sucursalActiva, page)
+        .then(lista => {
+          if (lista.ok === false) {
+            setModalShow(true)
+          } else {
+            if (lista.lista !== null) {
+              lista.nDocumento = nDocumento
+              lista.proveedor = proveedor
+              lista.documento = documento
+              dispatch({ type: "BUSCANDO_INGRESO_PROVEEDOR", lista })
+            }
+          }
+        })
+    } else {
+      getListaIngresoProveedorApi(page, 10, sucursalActiva)
+        .then(lista => {
+          if (lista.ok === false) {
+            setModalShow(true)
+          } else {
+            dispatch({ type: "ACTUALIZA_LISTA_INGRESO_PROVEEDOR", lista })
+          }
+        })
+    }
   }
   useEffect(() => {
     getListaSucursalesActivaApi(page, 1000000000)
       .then(result => {
         setSucursalA(result.lista.docs)
       })
-    // if (perfil_valor === 1) {
-    //   getListaSucursalesApi(page, 1000000000)
-    //     .then(result => {
-    //       setSucursalA(result.lista.docs)
-    //     })
-    // } else {
-    //   getListaSucursalesActivaApi(page, 1000000000)
-    //     .then(result => {
-    //       setSucursalA(result.lista.docs)
-    //     })
-    // }
-    // getListaProductoApi2(page, 1000000000)
-    //   .then(result => {
-    //     // console.log("LISTA DE PRODUCTOS DE PRUEBA", result);
-    //   })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [perfil_valor])
   useEffect(() => {
-    actualizarLista(page)
+    actualizarLista(page, busqueda)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, sucursalActiva])
+  }, [page])
+  useEffect(() => {
+    actualizarLista(page, false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sucursalActiva])
   if (busqueda) {
     return (
       <div>
@@ -95,8 +108,7 @@ const IngresoProveedorIngresos = (props) => {
         </Row>
         <Row>
           <Col md={10}>
-            {/* <FormularioBusquedaUnidades paginaActual={page} /> */}
-            Formulario busqueda
+            <BusquedaIngresosProveedor paginaActual={page} sucursalActiva={sucursalActiva} />
           </Col>
           <Col md={2}>
             <OverlayTrigger
@@ -186,8 +198,7 @@ const IngresoProveedorIngresos = (props) => {
           <>
             <Row>
               <Col xs={10}>
-                {/* <FormularioBusquedaUnidades paginaActual={page} /> */}
-                Formulario Busqueda
+                <BusquedaIngresosProveedor paginaActual={page} sucursalActiva={sucursalActiva} />
               </Col>
               <Col>
                 <OverlayTrigger
@@ -284,8 +295,6 @@ function CrearRegistro(props) {
     setDetalle(list)
   }
   const sumarItem = (id, nombre) => {
-    console.log("en funcion sumarItem")
-
     if (detalle === null) {
       setDetalle([
         {
@@ -315,19 +324,36 @@ function CrearRegistro(props) {
     if (perfil !== 1) {
       values.sucursal = sucursal
     }
-    delete values.detalle
-    delete values.cantidad
-    delete values.precioCosto
-    values.detalle = detalle
-    values.totalIngreso = totalIngreso
-    postIngresoProveedorApi(values)
-      .then(respuesta => {
-        setLoading(false)
-        setMessagePut(respuesta.message)
-        if (respuesta.ok) {
-          actualizarlista(paginaactual)
-        }
-      })
+    let status = true
+    detalle.forEach(function (det) {
+      if (det.cantidad < 1 || det.precioCosto < 1) {
+        status = false
+      }
+    })
+    if (status) {
+      delete values.detalle
+      delete values.cantidad
+      delete values.precioCosto
+      values.detalle = detalle
+      values.totalIngreso = totalIngreso
+      postIngresoProveedorApi(values)
+        .then(respuesta => {
+          setLoading(false)
+          setMessagePut(respuesta.message)
+          if (respuesta.ok) {
+            actualizarlista(paginaactual)
+          }
+          setTimeout(() => {
+            setMessagePut(false)
+          }, 10000)
+        })
+    } else {
+      setLoading(false)
+      setMessagePut("Cantidad y precios mayor a cero")
+      setTimeout(() => {
+        setMessagePut(false)
+      }, 3000)
+    }
   }
   async function buscando(e) {
     if (e.target.value === undefined || e.target.value === "" || e.target.value === null) {
@@ -506,7 +532,7 @@ function CrearRegistro(props) {
                   name="fecha"
                   ref={register({
                     required: {
-                      value: false,
+                      value: true,
                       message: 'Campo obligatorio'
                     }
                   })}
@@ -530,7 +556,6 @@ function CrearRegistro(props) {
                 />
               </Form.Group>
             </Form.Row>
-
           </>
           <hr />
           {/* Parte inferior del formulario */}
@@ -618,7 +643,11 @@ function CrearRegistro(props) {
                               required: {
                                 value: true,
                                 message: '*'
-                              }
+                              },
+                              // min: {
+                              //   value: 1,
+                              //   message: '**'
+                              // }
                             })}
                           />
                           {
@@ -637,7 +666,11 @@ function CrearRegistro(props) {
                               required: {
                                 value: true,
                                 message: '*'
-                              }
+                              },
+                              // min: {
+                              //   value: 1,
+                              //   message: '**'
+                              // }
                             })}
                           />
                           {

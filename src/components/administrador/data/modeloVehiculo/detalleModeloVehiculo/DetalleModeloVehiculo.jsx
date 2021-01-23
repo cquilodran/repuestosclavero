@@ -83,6 +83,7 @@ const DetalleModeloVehiculo = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>

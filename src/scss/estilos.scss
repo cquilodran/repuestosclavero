@@ -53,3 +53,22 @@ body {
 .modal-xl {
   min-width: 95vw !important;
 }
+
+.espera {
+  margin-left: 1em;
+  margin-right: 1em;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border-left-color: orange;
+  animation: gira 1s ease infinite;
+}
+@keyframes gira {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

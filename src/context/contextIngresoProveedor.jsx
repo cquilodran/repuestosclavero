@@ -12,6 +12,10 @@ const ProviderIngresoProveedor = ({ children }) => {
     pages: 1,
     total: 0,
     busqueda: false,
+    nDocumento: null,
+    proveedor: null,
+    documento: null,
+    sucursalactiva: null,
     actualizando: true
   })
   return (

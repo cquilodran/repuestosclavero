@@ -2,11 +2,10 @@ import React from 'react'
 import DetalleListaSucursales from '../detalleListaSucursales'
 
 const ListaSucursales = (props) => {
-  const { paginaActual } = props
-
+  const { paginaactual } = props
   return (
     <div>
-      <DetalleListaSucursales paginaActual={paginaActual} />
+      <DetalleListaSucursales paginaActual={paginaactual} />
     </div>
   )
 }

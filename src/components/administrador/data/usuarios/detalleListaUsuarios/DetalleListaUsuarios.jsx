@@ -17,7 +17,7 @@ const DetalleListaUsuarios = (props) => {
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" })
 
-  function actualizarLista() {
+  function actualizarLista(paginaActual) {
     getListaUsuariosApi(paginaActual)
       .then(lista => {
         if (lista.ok === false) {
@@ -83,6 +83,7 @@ const DetalleListaUsuarios = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>

@@ -83,6 +83,7 @@ const DetalleMarcaProducto = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>

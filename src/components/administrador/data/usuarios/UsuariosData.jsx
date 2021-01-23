@@ -67,7 +67,7 @@ const UsuariosData = (props) => {
             <>
               <Row>
                 <Col>
-                  <ListaUsuarios paginaactual={page} />
+                  <ListaUsuarios paginaActual={page} />
                 </Col>
               </Row>
               {
@@ -137,7 +137,7 @@ const UsuariosData = (props) => {
             <hr />
             <Row>
               <Col>
-                <ListaUsuarios paginaactual={page} />
+                <ListaUsuarios paginaActual={page} />
               </Col>
             </Row>
             {

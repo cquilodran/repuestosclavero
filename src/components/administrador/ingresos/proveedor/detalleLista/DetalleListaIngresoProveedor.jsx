@@ -91,6 +91,7 @@ const DetalleListaIngresoProveedor = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>
@@ -318,21 +319,38 @@ function EditarRegistro(props) {
     if (perfil !== 1) {
       values.sucursal = sucursal
     }
-    delete values.detalle
-    delete values.cantidad
-    delete values.precioCosto
-    delete values.precioTotal
-    values.detalle = detalle
-    values.totalIngreso = totalIngreso2
-    setLoading(true)
-    editarIngresoProveedorApi(informacion._id, values)
-      .then(respuesta => {
-        setLoading(false)
-        setMessagePut(respuesta.message)
-        if (respuesta.ok) {
-          actualizarlista(paginaactual)
-        }
-      })
+    let status = true
+    detalle.forEach(function (det) {
+      if (det.cantidad < 1 || det.precioCosto < 1) {
+        status = false
+      }
+    })
+    if (status) {
+      delete values.detalle
+      delete values.cantidad
+      delete values.precioCosto
+      delete values.precioTotal
+      values.detalle = detalle
+      values.totalIngreso = totalIngreso2
+      setLoading(true)
+      editarIngresoProveedorApi(informacion._id, values)
+        .then(respuesta => {
+          setLoading(false)
+          setMessagePut(respuesta.message)
+          if (respuesta.ok) {
+            actualizarlista(paginaactual)
+          }
+          setTimeout(() => {
+            setMessagePut(false)
+          }, 10000)
+        })
+    } else {
+      setLoading(false)
+      setMessagePut("Cantidad y precios mayor a cero")
+      setTimeout(() => {
+        setMessagePut(false)
+      }, 3000)
+    }
   }
   async function buscando(e) {
     if (e.target.value === undefined || e.target.value === "" || e.target.value === null) {

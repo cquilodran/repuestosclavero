@@ -9,7 +9,7 @@ import { getListaProveedores } from '../../../../../api/proveedor'
 const DetalleListaProveedoresDataProveedores = (props) => {
   const { state: { docs }, dispatch } = useContext(ContextProveedor)
   const { paginaActual } = props
-
+  console.log(paginaActual);
   const [modalShow, setModalShow] = useState({ ver: false, txt: "" })
   const [modalShow2, setModalShow2] = useState({ ver: false, datos: "" })
   const [modalShow3, setModalShow3] = useState({ ver: false, informacion: "" });
@@ -82,6 +82,7 @@ const DetalleListaProveedoresDataProveedores = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>

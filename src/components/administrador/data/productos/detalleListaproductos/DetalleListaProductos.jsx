@@ -94,6 +94,7 @@ const DetalleListaProductos = (props) => {
                     onChange={() => { }}
                     checked={y.activo}
                     name="activo"
+                    disabled
                   />
                 </td>
               </tr>
